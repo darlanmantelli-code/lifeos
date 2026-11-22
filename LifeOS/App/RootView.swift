@@ -5,6 +5,7 @@ enum AppTab: Hashable {
 }
 
 struct RootView: View {
+    @Environment(\.modelContext) private var context
     @State private var tab: AppTab = .inicio
     @State private var lastTab: AppTab = .inicio
     @State private var showAdd = false
@@ -13,7 +14,7 @@ struct RootView: View {
         TabView(selection: $tab) {
             PlaceholderScreen(title: "Início", icon: "house", etapa: 4)
                 .tabItem { Label("Início", systemImage: "house") }.tag(AppTab.inicio)
-            PlaceholderScreen(title: "Finanças", icon: "creditcard", etapa: 1)
+            FinanceView()
                 .tabItem { Label("Finanças", systemImage: "creditcard") }.tag(AppTab.financas)
             Color.clear
                 .tabItem { Label("Adicionar", systemImage: "plus.circle.fill") }.tag(AppTab.adicionar)
@@ -31,10 +32,11 @@ struct RootView: View {
                 lastTab = new
             }
         }
+        // ponytail: Adicionar opens the transaction form directly; becomes a type chooser in stage 4.
         .sheet(isPresented: $showAdd) {
-            PlaceholderScreen(title: "Adicionar", icon: "plus", etapa: 4)
-                .presentationDetents([.medium, .large])
+            TransactionForm(initialKind: .despesa)
         }
+        .task { FinanceStore.seedCategoriesIfNeeded(context) }
     }
 }
 
@@ -56,4 +58,4 @@ struct PlaceholderScreen: View {
     }
 }
 
-#Preview { RootView() }
+#Preview { RootView().modelContainer(for: AppSchema.models, inMemory: true) }

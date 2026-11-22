@@ -50,7 +50,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 ## Etapas (cada uma: CI verde)
 
 0. Base: projeto, CI macOS, design system ✅
-1. Finanças manual: contas, categorias, lançamentos (único/parcelado/recorrente), orçamento
+1. Finanças manual: contas, categorias, lançamentos (único/parcelado/recorrente), orçamento ✅
 2. Rotina: tarefas, hábitos, metas
 3. Compras e Saúde manual + gráficos
 4. Dashboard com widgets, busca global, Adicionar

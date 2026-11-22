@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct LifeOSApp: App {
@@ -8,5 +9,6 @@ struct LifeOSApp: App {
                 .tint(.lifeAccent)
                 .environment(\.locale, .ptBR)
         }
+        .modelContainer(for: AppSchema.models)
     }
 }
