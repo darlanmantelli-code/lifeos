@@ -26,40 +26,63 @@ extension UIColor {
 ///   blue  = what you can act on (tint, links, selection)
 ///   mint  = growth (progress, income, done)
 ///   ink   = text and headings
+/// The palette as (light, dark) hex pairs: one source for the colors below and for the contrast tests.
+enum BrandHex {
+    typealias Pair = (light: UInt32, dark: UInt32)
+
+    /// Headings. Light: azul profundo. Dark: gelo.
+    static let ink: Pair = (0x14283B, 0xF3F6FA)
+    /// Screen background. Light: branco gelo. Dark: azul profundo, one step darker.
+    static let canvas: Pair = (0xF6F8FA, 0x0E1C2B)
+    /// Cards. Dark mode steps toward azul grafite.
+    static let surface: Pair = (0xFFFFFF, 0x172B40)
+    static let hairline: Pair = (0xE2E8EF, 0x26364A)
+    /// Interactive blue (the logo's bar).
+    static let accent: Pair = (0x0462D0, 0x6BA9FF)
+    /// Growth: progress fills, completed items.
+    static let progress: Pair = (0x2BD08F, 0x5BE8B0)
+    /// Soft mint for chips and quiet highlights (the palette's verde menta).
+    static let mintSoft: Pair = (0xA4E8DB, 0x1D4D4A)
+    /// Income as text: darker than the logo mint so it stays readable on white.
+    static let income: Pair = (0x087F55, 0x5BE8B0)
+    static let expense: Pair = (0xD92D3A, 0xFF7A80)
+
+    // Logo colors (used by LivoMark, the wordmark and the hero card)
+    static let markBlueTop: Pair = (0x0462D0, 0x58A6FF)
+    static let markBlueBottom: Pair = (0x02357F, 0x2F79E8)
+    static let markMintA: Pair = (0x55E8A9, 0x79F0C0)
+    static let markMintB: Pair = (0x3FD99C, 0x58E3AB)
+    static let wordmark: Pair = (0x082650, 0xF3F6FA)
+    static let heroTop: Pair = (0x0A64DA, 0x0C52B8)
+    static let heroBottom: Pair = (0x03378A, 0x0A2C66)
+}
+
 extension Color {
     init(light: UIColor, dark: UIColor) {
         self.init(uiColor: UIColor { $0.userInterfaceStyle == .dark ? dark : light })
     }
 
-    static func brand(_ light: UInt32, dark: UInt32) -> Color {
-        Color(light: UIColor(hex: light), dark: UIColor(hex: dark))
+    static func brand(_ pair: BrandHex.Pair) -> Color {
+        Color(light: UIColor(hex: pair.light), dark: UIColor(hex: pair.dark))
     }
 
-    /// Headings. Light: azul profundo. Dark: gelo.
-    static let lifeInk = brand(0x14283B, dark: 0xF3F6FA)
-    /// Screen background. Light: branco gelo. Dark: azul profundo, one step darker.
-    static let lifeCanvas = brand(0xF6F8FA, dark: 0x0E1C2B)
-    /// Cards. Dark mode steps toward azul grafite.
-    static let lifeSurface = brand(0xFFFFFF, dark: 0x172B40)
-    static let lifeHairline = brand(0xE2E8EF, dark: 0x26364A)
-    /// Interactive blue (the logo's bar).
-    static let lifeAccent = brand(0x0462D0, dark: 0x6BA9FF)
-    /// Growth: progress fills, completed items.
-    static let lifeProgress = brand(0x2BD08F, dark: 0x5BE8B0)
-    /// Soft mint for chips and quiet highlights (the palette's verde menta).
-    static let lifeMintSoft = brand(0xA4E8DB, dark: 0x1D4D4A)
-    /// Income as text: darker than the logo mint so it stays readable on white.
-    static let lifeIncome = brand(0x087F55, dark: 0x5BE8B0)
-    static let lifeExpense = brand(0xD92D3A, dark: 0xFF7A80)
+    static let lifeInk = brand(BrandHex.ink)
+    static let lifeCanvas = brand(BrandHex.canvas)
+    static let lifeSurface = brand(BrandHex.surface)
+    static let lifeHairline = brand(BrandHex.hairline)
+    static let lifeAccent = brand(BrandHex.accent)
+    static let lifeProgress = brand(BrandHex.progress)
+    static let lifeMintSoft = brand(BrandHex.mintSoft)
+    static let lifeIncome = brand(BrandHex.income)
+    static let lifeExpense = brand(BrandHex.expense)
 
-    // Logo colors (used by LivoMark and the hero card)
-    static let markBlueTop = brand(0x0462D0, dark: 0x58A6FF)
-    static let markBlueBottom = brand(0x02357F, dark: 0x2F79E8)
-    static let markMintA = brand(0x55E8A9, dark: 0x79F0C0)
-    static let markMintB = brand(0x3FD99C, dark: 0x58E3AB)
-    static let markWordmark = brand(0x082650, dark: 0xF3F6FA)
-    static let heroTop = brand(0x0A64DA, dark: 0x0C52B8)
-    static let heroBottom = brand(0x03378A, dark: 0x0A2C66)
+    static let markBlueTop = brand(BrandHex.markBlueTop)
+    static let markBlueBottom = brand(BrandHex.markBlueBottom)
+    static let markMintA = brand(BrandHex.markMintA)
+    static let markMintB = brand(BrandHex.markMintB)
+    static let markWordmark = brand(BrandHex.wordmark)
+    static let heroTop = brand(BrandHex.heroTop)
+    static let heroBottom = brand(BrandHex.heroBottom)
 }
 
 enum Spacing {
