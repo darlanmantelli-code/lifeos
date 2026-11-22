@@ -111,6 +111,8 @@ final class FinanceTransaction {
     var installmentIndex: Int?
     var installmentCount: Int?
     var isRecurring: Bool = false
+    /// Bank id (OFX FITID or a hash for CSV) of an imported line; used to skip duplicates on re-import.
+    var externalID: String?
     var createdAt: Date = Date()
     var account: Account?
     var toAccount: Account?

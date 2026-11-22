@@ -62,4 +62,5 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 
 Pós-MVP:
 - Motor de automações (regras, modelos, histórico, notificações locais, segundo plano) ✅
-- Pendente: HealthKit, EventKit/Reminders, App Intents (Siri/Atalhos), widgets, importação CSV/OFX, estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.
+- Importação de extratos OFX/CSV com categorização sugerida e detecção de duplicados ✅
+- Pendente: HealthKit, EventKit/Reminders, App Intents (Siri/Atalhos), widgets, estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.

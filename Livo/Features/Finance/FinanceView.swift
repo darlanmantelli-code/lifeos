@@ -9,11 +9,13 @@ struct FinanceView: View {
         case new(TxnKind)
         case edit(FinanceTransaction)
         case newAccount
+        case importar
         var id: AnyHashable {
             switch self {
             case .new(let k): AnyHashable(k)
             case .edit(let t): AnyHashable(t.persistentModelID)
             case .newAccount: AnyHashable("account")
+            case .importar: AnyHashable("import")
             }
         }
     }
@@ -77,6 +79,7 @@ struct FinanceView: View {
                         Button("Contas e cartões", systemImage: "creditcard") { route = .contas }
                         Button("Categorias", systemImage: "tag") { route = .categorias }
                         Button("Orçamentos", systemImage: "chart.bar") { route = .orcamentos }
+                        Button("Importar extrato (OFX/CSV)", systemImage: "square.and.arrow.down") { sheet = .importar }
                     } label: {
                         Image(systemName: "ellipsis.circle")
                     }
@@ -100,6 +103,7 @@ struct FinanceView: View {
                 case .new(let kind): TransactionForm(initialKind: kind)
                 case .edit(let t): TransactionForm(editing: t)
                 case .newAccount: AccountForm(editing: nil)
+                case .importar: ImportView()
                 }
             }
             .confirmationDialog("Apagar lançamento?", isPresented: $confirmDelete, presenting: pendingDelete) { t in
