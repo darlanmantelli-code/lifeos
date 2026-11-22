@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-enum HomeRoute: Hashable { case compras, saude }
+enum HomeRoute: String, Hashable { case compras, saude }
 
 struct HomeView: View {
     @AppStorage("dash.order") private var orderRaw = ""
@@ -9,7 +9,11 @@ struct HomeView: View {
     @AppStorage("dash.period") private var period: DashPeriod = .dia
     @State private var query = ""
     @State private var showEditor = false
-    @State private var path = NavigationPath()
+    @State private var path: NavigationPath = {
+        var p = NavigationPath()
+        if let r = HomeRoute(rawValue: LaunchArgs.string("route") ?? "") { p.append(r) }
+        return p
+    }()
 
     private var greeting: String {
         switch Calendar.ptBR.component(.hour, from: .now) {

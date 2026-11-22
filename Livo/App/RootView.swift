@@ -1,13 +1,19 @@
 import SwiftUI
 
-enum AppTab: Hashable {
+enum AppTab: String, Hashable {
     case inicio, financas, adicionar, rotina, ia
+}
+
+/// Launch arguments (`-tab financas`, `-segment habitos`, `-route saude`) land in UserDefaults;
+/// CI uses them to open each screen for screenshots.
+enum LaunchArgs {
+    static func string(_ key: String) -> String? { UserDefaults.standard.string(forKey: key) }
 }
 
 struct RootView: View {
     @Environment(\.modelContext) private var context
-    @State private var tab: AppTab = .inicio
-    @State private var lastTab: AppTab = .inicio
+    @State private var tab: AppTab = AppTab(rawValue: LaunchArgs.string("tab") ?? "") ?? .inicio
+    @State private var lastTab: AppTab = AppTab(rawValue: LaunchArgs.string("tab") ?? "") ?? .inicio
     @State private var showAdd = false
 
     var body: some View {

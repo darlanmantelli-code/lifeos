@@ -7,18 +7,52 @@ on:
 jobs:
   build-test:
     runs-on: macos-15
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - name: Xcode
         run: xcodebuild -version
       - name: Generate project
         run: brew install xcodegen && xcodegen generate
+      - name: Pick simulator
+        run: |
+          UDID=$(xcrun simctl list devices available | grep -m1 -E 'iPhone [0-9]+' | grep -oE '[0-9A-F-]{36}')
+          echo "Simulator: $(xcrun simctl list devices available | grep $UDID)"
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
       - name: Build & test
         run: |
           set -o pipefail
-          DEVICE=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [0-9]+[^(]*' | sed 's/ *$//')
-          echo "Simulator: $DEVICE"
           xcodebuild test -project Livo.xcodeproj -scheme Livo \
-            -destination "platform=iOS Simulator,name=$DEVICE" \
+            -destination "id=$UDID" -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO | tail -n 200
+      - name: Screenshots (modo demonstração)
+        run: |
+          APP=build/Build/Products/Debug-iphonesimulator/Livo.app
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl install "$UDID" "$APP"
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 || true
+          mkdir -p screenshots
+          shot() {
+            name=$1; shift
+            xcrun simctl terminate "$UDID" com.livo.app 2>/dev/null || true
+            xcrun simctl launch "$UDID" com.livo.app -demo YES "$@" >/dev/null
+            sleep 6
+            xcrun simctl io "$UDID" screenshot "screenshots/$name.png"
+          }
+          for mode in light dark; do
+            xcrun simctl ui "$UDID" appearance $mode
+            shot "$mode-1-inicio" -tab inicio
+            shot "$mode-2-financas" -tab financas
+            shot "$mode-3-rotina-hoje" -tab rotina -segment hoje
+            shot "$mode-4-rotina-habitos" -tab rotina -segment habitos
+            shot "$mode-5-rotina-metas" -tab rotina -segment metas
+            shot "$mode-6-saude" -tab inicio -route saude
+            shot "$mode-7-compras" -tab inicio -route compras
+          done
+          ls -la screenshots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: screenshots
+          retention-days: 14
