@@ -9,3 +9,6 @@ __pycache__/
 preview/
 Livo/Info.plist
 LivoWidgets/Info.plist
+
+web/node_modules/
+web/dist/
