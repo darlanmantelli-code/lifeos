@@ -211,7 +211,7 @@ struct FinanceView: View {
             Button { shiftMonth(-1) } label: { Image(systemName: "chevron.left") }
                 .accessibilityLabel("Mês anterior")
             Spacer()
-            Text(month.formatted(.dateTime.month(.wide).year().locale(.ptBR)).capitalized)
+            Text(month.formatted(.dateTime.month(.wide).year().locale(.ptBR)).firstUppercased)
                 .font(.headline)
             Spacer()
             Button { shiftMonth(1) } label: { Image(systemName: "chevron.right") }

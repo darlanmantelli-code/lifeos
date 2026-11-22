@@ -63,6 +63,7 @@ jobs:
             shot "$mode-6-saude" -tab inicio -route saude
             shot "$mode-7-compras" -tab inicio -route compras
             shot "$mode-8-ia" -tab ia
+            shot "$mode-9-configuracoes" -tab inicio -route configuracoes
           done
           ls -la screenshots
       - uses: actions/upload-artifact@v4

@@ -3,29 +3,52 @@ import SwiftData
 
 @main
 struct LivoApp: App {
-    private let container: ModelContainer
-    private let isDemo = DemoMode.isOn
-
-    init() {
-        let demo = DemoMode.isOn
-        do {
-            container = try ModelContainer(for: Schema(AppSchema.models),
-                                           configurations: ModelConfiguration(isStoredInMemoryOnly: demo))
-        } catch {
-            fatalError("Não foi possível abrir o banco local: \(error)")
-        }
-        if demo { DemoData.seed(container.mainContext) }
-    }
+    @AppStorage(DemoMode.key) private var demo = false
+    @State private var containers = ContainerStore()
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    if isDemo { DemoBanner().padding(.bottom, 4) }
-                }
-                .tint(.lifeAccent)
-                .environment(\.locale, .ptBR)
+            LockGate {
+                RootView()
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        if demo { DemoBanner().padding(.bottom, 4) }
+                    }
+            }
+            .id(demo) // rebuild the whole tree when switching between real and demo data
+            .modelContainer(containers.container(demo: demo))
+            .tint(.lifeAccent)
+            .environment(\.locale, .ptBR)
         }
-        .modelContainer(container)
+    }
+}
+
+/// Real data lives on disk; demo data is a separate in-memory store, recreated each time demo mode is turned on.
+@MainActor
+final class ContainerStore {
+    private var real: ModelContainer?
+    private var demoContainer: ModelContainer?
+
+    func container(demo: Bool) -> ModelContainer {
+        if demo {
+            if let demoContainer { return demoContainer }
+            let c = make(inMemory: true)
+            DemoData.seed(c.mainContext)
+            demoContainer = c
+            return c
+        }
+        demoContainer = nil
+        if let real { return real }
+        let c = make(inMemory: false)
+        real = c
+        return c
+    }
+
+    private func make(inMemory: Bool) -> ModelContainer {
+        do {
+            return try ModelContainer(for: Schema(AppSchema.models),
+                                      configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory))
+        } catch {
+            fatalError("Não foi possível abrir o banco local: \(error)")
+        }
     }
 }

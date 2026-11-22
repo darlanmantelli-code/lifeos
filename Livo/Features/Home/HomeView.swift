@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-enum HomeRoute: String, Hashable { case compras, saude }
+enum HomeRoute: String, Hashable { case compras, saude, configuracoes }
 
 struct HomeView: View {
     @AppStorage("dash.order") private var orderRaw = ""
@@ -42,6 +42,7 @@ struct HomeView: View {
                             Button("Saúde", systemImage: "heart") { path.append(HomeRoute.saude) }
                         }
                         Button("Editar painel", systemImage: "slider.horizontal.3") { showEditor = true }
+                        Button("Configurações", systemImage: "gearshape") { path.append(HomeRoute.configuracoes) }
                     } label: {
                         Image(systemName: "square.grid.2x2")
                     }
@@ -52,6 +53,7 @@ struct HomeView: View {
                 switch r {
                 case .compras: ShoppingHomeView()
                 case .saude: HealthView()
+                case .configuracoes: SettingsView()
                 }
             }
             .navigationDestination(for: Goal.self) { GoalDetailView(goal: $0) }
@@ -65,7 +67,7 @@ struct HomeView: View {
         let widgets = DashboardLayout.visible(orderRaw: orderRaw, hiddenRaw: hiddenRaw)
         return ScrollView {
             VStack(alignment: .leading, spacing: Spacing.m) {
-                Text(Date.now.formatted(.dateTime.weekday(.wide).day().month(.wide).locale(.ptBR)).capitalized)
+                Text(Date.now.formatted(.dateTime.weekday(.wide).day().month(.wide).locale(.ptBR)).firstUppercased)
                     .foregroundStyle(.secondary)
                 Picker("Período", selection: $period) {
                     ForEach(DashPeriod.allCases) { Text($0.rawValue).tag($0) }

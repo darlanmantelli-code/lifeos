@@ -37,3 +37,8 @@ struct CardStyle: ViewModifier {
 extension View {
     func card() -> some View { modifier(CardStyle()) }
 }
+
+extension String {
+    /// "domingo, 22 de novembro" → "Domingo, 22 de novembro" (`.capitalized` would also turn "de" into "De").
+    var firstUppercased: String { prefix(1).uppercased() + dropFirst() }
+}

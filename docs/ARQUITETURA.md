@@ -57,7 +57,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 3. Compras (listas, desejos, histórico de preço) e Saúde manual + gráficos ✅
 4. Painel com widgets reorganizáveis (Dia/Semana/Mês), alertas, busca global, Adicionar ✅
 5. livo IA: backend FastAPI + ferramentas no aparelho + confirmação + histórico ✅
-6. Privacidade: Face ID, exportar/apagar, modo demonstração
+6. Privacidade: Face ID, exportar/restaurar/apagar, modo demonstração ✅
 7. TestFlight (exige Apple Developer)
 
 Pós-MVP: HealthKit, EventKit/Reminders, App Intents, widgets, CSV/OFX, automações

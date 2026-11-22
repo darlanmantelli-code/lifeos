@@ -5,7 +5,8 @@ import SwiftUI
 /// Demo mode: in-memory store filled with clearly fictitious records, never mixed with real data.
 /// Enabled with the launch argument `-demo YES` (CI screenshots); a user toggle comes with the privacy stage.
 enum DemoMode {
-    static var isOn: Bool { UserDefaults.standard.bool(forKey: "demo") }
+    static let key = "demo"
+    static var isOn: Bool { UserDefaults.standard.bool(forKey: key) }
 }
 
 struct DemoBanner: View {
