@@ -100,7 +100,7 @@ struct ReceiptsSection: View {
     }
 
     /// Photos are downscaled to 2400 px on the long side and stored as JPEG to keep the files small.
-    static func compressed(_ data: Data) -> Data {
+    nonisolated static func compressed(_ data: Data) -> Data {
         guard let image = UIImage(data: data) else { return data }
         let longest = max(image.size.width, image.size.height)
         let scale = min(1, 2_400 / longest)
