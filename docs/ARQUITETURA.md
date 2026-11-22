@@ -58,7 +58,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 4. Painel com widgets reorganizáveis (Dia/Semana/Mês), alertas, busca global, Adicionar ✅
 5. livo IA: backend FastAPI + ferramentas no aparelho + confirmação + histórico ✅
 6. Privacidade: Face ID, exportar/restaurar/apagar, modo demonstração ✅
-7. TestFlight (exige Apple Developer)
+7. TestFlight: ícone, manifesto de privacidade, workflow manual e guia (docs/TESTFLIGHT.md) ✅ — envio depende das credenciais Apple
 
 Pós-MVP: HealthKit, EventKit/Reminders, App Intents, widgets, CSV/OFX, automações
 (`BGAppRefreshTask` + notificações locais), estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.

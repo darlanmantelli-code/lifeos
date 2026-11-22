@@ -38,6 +38,14 @@ jobs:
           xcodebuild test -project Livo.xcodeproj -scheme Livo \
             -destination "id=$UDID" -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO | tail -n 200
+      - name: Device build (Release archive, unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild archive -project Livo.xcodeproj -scheme Livo -configuration Release \
+            -destination "generic/platform=iOS" -archivePath build/Livo.xcarchive \
+            CODE_SIGNING_ALLOWED=NO | tail -n 40
+          test -f build/Livo.xcarchive/Products/Applications/Livo.app/PrivacyInfo.xcprivacy
+          plutil -p build/Livo.xcarchive/Products/Applications/Livo.app/Info.plist | grep -E "CFBundleDisplayName|NSFaceID|ITSApp|CFBundleIcon"
       - name: Screenshots (modo demonstração)
         run: |
           APP=build/Build/Products/Debug-iphonesimulator/Livo.app

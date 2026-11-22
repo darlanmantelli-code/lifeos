@@ -15,3 +15,5 @@ open Livo.xcodeproj
 ```
 
 Sem Mac: todo push roda build + testes no GitHub Actions (`.github/workflows/ios.yml`).
+
+TestFlight: [docs/TESTFLIGHT.md](docs/TESTFLIGHT.md). Servidor do assistente: [backend/README.md](backend/README.md).
