@@ -3,7 +3,7 @@ import SwiftData
 import Charts
 
 struct FinanceView: View {
-    enum Route: Hashable { case contas, categorias, orcamentos }
+    enum Route: Hashable { case contas, categorias, orcamentos, analise }
 
     enum FormSheet: Identifiable {
         case new(TxnKind)
@@ -79,6 +79,7 @@ struct FinanceView: View {
                         Button("Contas e cartões", systemImage: "creditcard") { route = .contas }
                         Button("Categorias", systemImage: "tag") { route = .categorias }
                         Button("Orçamentos", systemImage: "chart.bar") { route = .orcamentos }
+                        Button("Análise e projeção", systemImage: "chart.xyaxis.line") { route = .analise }
                         Button("Importar extrato (OFX/CSV)", systemImage: "square.and.arrow.down") { sheet = .importar }
                     } label: {
                         Image(systemName: "ellipsis.circle")
@@ -96,6 +97,7 @@ struct FinanceView: View {
                 case .contas: AccountsView()
                 case .categorias: CategoriesView()
                 case .orcamentos: BudgetsView(month: month)
+                case .analise: InsightsView()
                 }
             }
             .sheet(item: $sheet) { s in
