@@ -10,10 +10,11 @@ struct LivoApp: App {
     var body: some Scene {
         WindowGroup {
             LockGate {
-                RootView()
-                    .safeAreaInset(edge: .top, spacing: 0) {
-                        if demo { DemoBanner().padding(.bottom, 4) }
-                    }
+                // A VStack (not safeAreaInset) so the banner takes its own row instead of covering navigation bars.
+                VStack(spacing: 0) {
+                    if demo { DemoBanner().padding(.vertical, 4) }
+                    RootView()
+                }
             }
             .id(demo) // rebuild the whole tree when switching between real and demo data
             .modelContainer(containers.container(demo: demo))

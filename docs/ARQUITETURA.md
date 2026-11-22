@@ -62,5 +62,4 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 
 Pós-MVP:
 - Motor de automações (regras, modelos, histórico, notificações locais, segundo plano) ✅
-- Pendente: HealthKit, EventKit/Reminders, App Intents, widgets, CSV/OFX
-(`BGAppRefreshTask` + notificações locais), estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.
+- Pendente: HealthKit, EventKit/Reminders, App Intents (Siri/Atalhos), widgets, importação CSV/OFX, estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.
