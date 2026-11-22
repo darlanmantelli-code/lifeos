@@ -32,9 +32,8 @@ struct RootView: View {
                 lastTab = new
             }
         }
-        // ponytail: Adicionar opens the transaction form directly; becomes a type chooser in stage 4.
         .sheet(isPresented: $showAdd) {
-            TransactionForm(initialKind: .despesa)
+            AddSheet()
         }
         .task { FinanceStore.seedCategoriesIfNeeded(context) }
     }
