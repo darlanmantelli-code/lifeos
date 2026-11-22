@@ -21,6 +21,9 @@ enum AutomationScheduler {
 
     static func runInForeground() async {
         guard !DemoMode.isOn else { return }
+        if UserDefaults.standard.bool(forKey: HealthSync.autoKey) {
+            _ = try? await HealthSync.sync(days: 7, into: SharedStore.real.mainContext)
+        }
         await AutomationEngine.run(in: SharedStore.real.mainContext)
     }
 }

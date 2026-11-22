@@ -2,16 +2,30 @@ import SwiftUI
 import SwiftData
 import Charts
 
-private let healthDisclaimer = "Registros pessoais para acompanhamento. O livo não faz diagnósticos nem recomendações clínicas; para isso, procure um profissional de saúde. A integração com o app Saúde da Apple chega em uma etapa futura."
+private let healthDisclaimer = "Registros pessoais para acompanhamento. O livo não faz diagnósticos nem recomendações clínicas; para isso, procure um profissional de saúde. Dados do app Saúde são só lidos (nunca alterados) e somados aos seus registros manuais."
 
 struct HealthView: View {
     // ponytail: loads every entry and filters per card in memory; per-kind queries if volume hurts.
     @Query(sort: \HealthEntry.date, order: .reverse) private var entries: [HealthEntry]
     @Query private var targets: [HealthTarget]
     @State private var showAdd = false
+    @State private var syncing = false
+    @State private var syncMessage: String?
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         ScrollView {
+            if HealthSync.isAvailable {
+                HStack {
+                    Button(syncing ? "Importando…" : "Importar do app Saúde", systemImage: "heart.text.square") { sync() }
+                        .buttonStyle(.bordered)
+                        .disabled(syncing)
+                    if let syncMessage { Text(syncMessage).font(.caption).foregroundStyle(.secondary) }
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, Spacing.s)
+            }
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 12)], spacing: 12) {
                 ForEach(HealthKind.allCases) { k in
                     NavigationLink {
@@ -36,6 +50,19 @@ struct HealthView: View {
                 .accessibilityLabel("Novo registro")
         }
         .sheet(isPresented: $showAdd) { HealthEntryForm(kind: .agua) }
+    }
+
+    private func sync() {
+        syncing = true
+        Task {
+            do {
+                let n = try await HealthSync.sync(into: context)
+                syncMessage = n == 0 ? "Nada novo (ou acesso não permitido)." : "\(n) registros diários importados."
+            } catch {
+                syncMessage = "Não foi possível importar: \(error.localizedDescription)"
+            }
+            syncing = false
+        }
     }
 }
 
@@ -123,6 +150,7 @@ struct HealthMetricView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("\(HealthLogic.format(e.value, e.value2, kind)) \(kind.unit)").monospacedDigit()
                             if !e.note.isEmpty { Text(e.note).font(.caption).foregroundStyle(.secondary) }
+                            if e.sourceRaw == HealthSync.source { Text("Apple Saúde").font(.caption2).foregroundStyle(.secondary) }
                         }
                         Spacer()
                         Text(e.date.formatted(.dateTime.day().month().hour().minute().locale(.ptBR)))

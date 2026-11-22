@@ -6,6 +6,7 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var context
     @AppStorage(AppLock.enabledKey) private var lockEnabled = false
     @AppStorage(DemoMode.key) private var demo = false
+    @AppStorage(HealthSync.autoKey) private var healthAuto = false
 
     @State private var exportURL: URL?
     @State private var message: String?
@@ -44,6 +45,16 @@ struct SettingsView: View {
                 Text("A exportação é um arquivo JSON com todos os seus registros, para backup ou para levar a outro app. Guarde-o em local seguro: ele não é criptografado. O backup do iPhone/iCloud também inclui os dados do app.")
             }
 
+            if HealthSync.isAvailable {
+                Section {
+                    Toggle("Atualizar do app Saúde ao abrir", isOn: $healthAuto)
+                } header: {
+                    Text("Integrações")
+                } footer: {
+                    Text("Lê os últimos 7 dias do app Saúde sempre que você abre o livo. Somente leitura; você escolhe os tipos de dados na tela de permissão do iOS.")
+                }
+            }
+
             Section {
                 Toggle("Modo demonstração", isOn: $demo)
             } footer: {
@@ -76,6 +87,9 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Configurações")
+        .onChange(of: healthAuto) { _, on in
+            if on { Task { do { try await HealthSync.requestAccess() } catch { healthAuto = false; show("Não foi possível acessar o app Saúde.") } } }
+        }
         .onChange(of: lockEnabled) { _, on in
             if on && !AppLock.canUse() {
                 lockEnabled = false

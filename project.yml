@@ -34,6 +34,8 @@ targets:
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.lifestyle
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_NSFaceIDUsageDescription: "O livo usa o Face ID para proteger seus dados quando o bloqueio está ativado."
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "O livo lê passos, sono, exercícios, água, peso e frequência cardíaca do app Saúde para mostrar sua evolução. Nada é alterado no app Saúde."
+        CODE_SIGN_ENTITLEMENTS: Livo/Livo.entitlements
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         TARGETED_DEVICE_FAMILY: "1"
   LivoTests:
