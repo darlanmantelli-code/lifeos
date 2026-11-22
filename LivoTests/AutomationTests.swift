@@ -30,7 +30,8 @@ final class AutomationTests: XCTestCase {
         XCTAssertEqual(fired, 1)
         XCTAssertEqual(try ctx.fetch(FetchDescriptor<TaskItem>()).first?.priority, .alta)
         // Same occurrence the next day: already handled.
-        XCTAssertEqual(await AutomationEngine.run(in: ctx, now: day(3, 16)), 0)
+        let again = await AutomationEngine.run(in: ctx, now: day(3, 16))
+        XCTAssertEqual(again, 0)
         // Next month's invoice is a new occurrence.
         XCTAssertEqual(AutomationEngine.firings(for: rule, in: ctx, now: day(4, 15)).count, 1)
         XCTAssertEqual(try ctx.fetch(FetchDescriptor<AutomationRun>()).count, 1)
