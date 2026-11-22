@@ -27,8 +27,9 @@ targets:
       path: Livo/Info.plist
       properties:
         BGTaskSchedulerPermittedIdentifiers: [com.livo.app.refresh]
-        UIBackgroundModes: [fetch]
+        UIBackgroundModes: [fetch, remote-notification]
         LivoAppGroup: group.$(APP_BUNDLE_ID)
+        LivoCloudContainer: iCloud.$(APP_BUNDLE_ID)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(APP_BUNDLE_ID)

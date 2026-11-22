@@ -21,6 +21,7 @@ enum AutomationScheduler {
 
     static func runInForeground() async {
         guard !DemoMode.isOn else { return }
+        if SharedStore.cloudStatus == .on { _ = try? FinanceStore.mergeDuplicateCategories(SharedStore.real.mainContext) }
         if UserDefaults.standard.bool(forKey: HealthSync.autoKey) {
             _ = try? await HealthSync.sync(days: 7, into: SharedStore.real.mainContext)
         }

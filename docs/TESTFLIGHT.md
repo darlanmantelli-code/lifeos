@@ -14,8 +14,9 @@ depois cada envio é um clique.
    (`com.livo.app`, o padrão do projeto, provavelmente já pertence a outra pessoa).
 2. Em <https://developer.apple.com/account/resources/identifiers>:
    - **+** → App Groups → identificador `group.<seu bundle ID>` (ex.: `group.br.seunome.livo`).
-   - **+** → App IDs → App → bundle ID `br.seunome.livo`, marque **HealthKit** e **App Groups**
-     (associe o grupo acima).
+   - **+** → iCloud Containers → `iCloud.<seu bundle ID>` (ex.: `iCloud.br.seunome.livo`).
+   - **+** → App IDs → App → bundle ID `br.seunome.livo`, marque **HealthKit**, **App Groups** (associe o grupo acima),
+     **iCloud** (CloudKit, associe o container acima) e **Push Notifications** (o CloudKit usa push silencioso para sincronizar).
    - **+** → App IDs → App → bundle ID `br.seunome.livo.widgets` (o widget), marque **App Groups**
      com o mesmo grupo.
 
@@ -81,3 +82,10 @@ GitHub → Actions → **TestFlight** → Run workflow. Em ~15 minutos o build a
 | App Saúde (leitura) | Ao tocar em "Importar do app Saúde" ou ativar a atualização automática |
 | Calendário | Ao tocar em "Conectar calendário" no painel |
 | Lembretes | Ao enviar a primeira tarefa para os Lembretes |
+
+## iCloud (opcional)
+
+A sincronização vem desligada. Para ativar: Configurações → iCloud → **Sincronizar com iCloud**, depois feche e abra o app.
+Antes da primeira ativação, gere uma exportação (Configurações → Seus dados). No CloudKit Dashboard
+(<https://icloud.developer.apple.com>), depois do primeiro uso em desenvolvimento, use **Deploy Schema Changes**
+para levar o esquema ao ambiente de produção antes de distribuir pela App Store; no TestFlight o ambiente usado é o de produção.

@@ -66,4 +66,5 @@ Pós-MVP:
 - Estudos (progresso, tempo, revisões espaçadas) e Pomodoro ✅
 - Siri e Atalhos (App Intents): registrar despesa, saldo, criar tarefa, registrar água ✅
 - Apple Saúde (leitura), Calendário/Lembretes e widgets da tela inicial ✅
-- Pendente: CloudKit, Open Finance (provedor autorizado), comparação de preços.
+- Sincronização opcional pelo iCloud (CloudKit privado) com mesclagem de categorias duplicadas ✅
+- Pendente: Open Finance (provedor autorizado), comparação de preços.

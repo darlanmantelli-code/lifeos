@@ -7,6 +7,18 @@ struct SettingsView: View {
     @AppStorage(AppLock.enabledKey) private var lockEnabled = false
     @AppStorage(DemoMode.key) private var demo = false
     @AppStorage(HealthSync.autoKey) private var healthAuto = false
+    @AppStorage(SharedStore.syncKey) private var iCloudSync = false
+
+    private var iCloudStatus: String {
+        let signedIn = FileManager.default.ubiquityIdentityToken != nil
+        switch SharedStore.cloudStatus {
+        case .on where !iCloudSync: return "Será desativada na próxima abertura do app."
+        case .on: return signedIn ? "Ativa: seus dados sincronizam com o seu iCloud." : "Ativa, mas não há conta iCloud conectada neste iPhone."
+        case .off where iCloudSync: return "Será ativada na próxima abertura do app (feche e abra o livo)."
+        case .off: return "Desativada: os dados ficam só neste iPhone."
+        case .failed(let message): return "Não foi possível ativar: \(message)"
+        }
+    }
 
     @State private var exportURL: URL?
     @State private var message: String?
@@ -31,6 +43,16 @@ struct SettingsView: View {
                 Text("Segurança")
             } footer: {
                 Text("Pede Face ID (ou o código do iPhone) ao voltar para o app. O conteúdo também fica oculto na troca de apps.")
+            }
+
+            Section {
+                Toggle("Sincronizar com iCloud", isOn: $iCloudSync)
+                    .disabled(demo)
+                Text(iCloudStatus).font(.footnote).foregroundStyle(.secondary)
+            } header: {
+                Text("iCloud")
+            } footer: {
+                Text("Usa o banco privado do seu iCloud (só você acessa) para manter iPhones e iPads iguais e servir de backup. Faça uma exportação antes da primeira ativação. Vale a partir da próxima abertura do app.")
             }
 
             Section {

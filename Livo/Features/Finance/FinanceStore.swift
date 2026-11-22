@@ -93,4 +93,36 @@ enum FinanceStore {
         for (name, icon) in despesas { ctx.insert(FinanceCategory(name: name, kind: .despesa, icon: icon)) }
         for (name, icon) in receitas { ctx.insert(FinanceCategory(name: name, kind: .receita, icon: icon)) }
     }
+
+    /// With iCloud sync, each device seeds its own default categories, so the same category can arrive twice.
+    /// Merges categories with the same name, kind and parent: keeps the most used one and moves
+    /// transactions, budgets and subcategories onto it. Returns how many duplicates were removed.
+    @discardableResult
+    static func mergeDuplicateCategories(_ ctx: ModelContext) throws -> Int {
+        let all = try ctx.fetch(FetchDescriptor<FinanceCategory>())
+        func key(_ c: FinanceCategory) -> String {
+            "\(c.kindRaw)|\(c.parent.map { StatementParser.normalize($0.name) } ?? "")|\(StatementParser.normalize(c.name))"
+        }
+        var gone = Set<PersistentIdentifier>()
+        // Roots first, so children re-key against their surviving parent.
+        for c in all.sorted(by: { ($0.parent == nil ? 0 : 1) < ($1.parent == nil ? 0 : 1) }) where !gone.contains(c.persistentModelID) {
+            let twins = all.filter { !gone.contains($0.persistentModelID) && key($0) == key(c) }
+            guard twins.count > 1 else { continue }
+            let keep = twins.max { ($0.transactions?.count ?? 0) < ($1.transactions?.count ?? 0) }!
+            let dups = twins.filter { $0 != keep }
+            for dup in dups {
+                for t in dup.transactions ?? [] { t.category = keep }
+                for b in dup.budgets ?? [] { b.category = keep }
+                for child in dup.children ?? [] { child.parent = keep }
+            }
+            // Flush the moves before deleting: the cascade rules must not see moved children/budgets.
+            try ctx.save()
+            for dup in dups {
+                gone.insert(dup.persistentModelID)
+                ctx.delete(dup)
+            }
+            try ctx.save()
+        }
+        return gone.count
+    }
 }
