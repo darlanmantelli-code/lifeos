@@ -120,7 +120,10 @@ final class FinanceInsightsTests: XCTestCase {
         try ctx.save()
         let points = FinanceInsights.projection(accounts: [conta, poupanca], transactions: try ctx.fetch(FetchDescriptor<FinanceTransaction>()), now: now)
         XCTAssertEqual(FinanceInsights.projected(points, afterDays: 0), 100_000)
-        XCTAssertEqual(FinanceInsights.projected(points, afterDays: 30), 100_000 - 30_000 * 3) // three rents within 90 days? checked below
+        // Rent on Jun 10 is in the window by day 30 (Jul 1); the transfer on Jun 15 changes nothing consolidated.
+        XCTAssertEqual(FinanceInsights.projected(points, afterDays: 30), 70_000)
+        // By day 90 (Aug 30) the Jun, Jul and Aug rents have all happened.
+        XCTAssertEqual(FinanceInsights.projected(points, afterDays: 90), 10_000)
     }
 
     @MainActor
