@@ -23,7 +23,7 @@ struct RoutineView: View {
     @Query(sort: \Habit.createdAt) private var habits: [Habit]
     @Query(sort: \Goal.createdAt) private var goals: [Goal]
 
-    @State private var segment: Segment = Segment.allCases.first { "($0)" == LaunchArgs.string("segment") } ?? .hoje
+    @State private var segment: Segment = Segment.allCases.first { String(describing: $0) == LaunchArgs.string("segment") } ?? .hoje
     @State private var sheet: FormSheet?
 
     private var activeHabits: [Habit] { habits.filter { !$0.archived } }
