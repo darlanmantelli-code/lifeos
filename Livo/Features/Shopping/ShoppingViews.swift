@@ -27,6 +27,7 @@ struct ShoppingHomeView: View {
             section("Desejos", lists.filter(\.isWishlist))
         }
         .navigationTitle("Compras")
+        .brandScreen()
         .toolbar {
             Menu {
                 Button("Nova lista de compras", systemImage: "cart") { startNew(wish: false) }
@@ -144,6 +145,7 @@ struct ShoppingListView: View {
             }
         }
         .navigationTitle(list.name)
+        .brandScreen()
         .toolbar {
             Menu {
                 Button("Lançar compra dos itens marcados", systemImage: "creditcard") {
@@ -175,7 +177,7 @@ struct ShoppingListView: View {
             } label: {
                 Image(systemName: i.bought ? "checkmark.circle.fill" : "circle")
                     .font(.title2)
-                    .foregroundStyle(i.bought ? Color.lifeAccent : Color.secondary)
+                    .foregroundStyle(i.bought ? Color.lifeProgress : Color.secondary)
             }
             .buttonStyle(.plain)
             .sensoryFeedback(.selection, trigger: i.bought)
@@ -308,6 +310,7 @@ struct ShoppingItemForm: View {
                 }
             }
             .navigationTitle("Item")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

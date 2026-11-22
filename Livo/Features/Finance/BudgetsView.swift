@@ -41,6 +41,7 @@ struct BudgetsView: View {
             }
         }
         .navigationTitle("Orçamentos")
+        .brandScreen()
         .alert("Limite mensal\(editing.map { " — \($0.name)" } ?? "")", isPresented: $showEdit) {
             TextField("0,00", text: $limitText).keyboardType(.decimalPad)
             Button("Salvar", action: save)

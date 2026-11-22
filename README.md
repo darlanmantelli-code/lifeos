@@ -1,6 +1,6 @@
 # livo
 
-*sua vida mais inteligente*
+*Vida inteligente. Sua vida mais simples.*
 
 App iOS pessoal (SwiftUI, iOS 17+). Arquitetura e plano: [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
 

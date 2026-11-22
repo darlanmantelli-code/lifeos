@@ -44,8 +44,9 @@ struct AssistantView: View {
                 }
                 inputBar
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.lifeCanvas)
             .navigationTitle("livo IA")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -67,9 +68,10 @@ struct AssistantView: View {
 
     private var intro: some View {
         VStack(alignment: .leading, spacing: Spacing.m) {
-            Image(systemName: "sparkles").font(.largeTitle).foregroundStyle(Color.lifeAccent).accessibilityHidden(true)
+            LivoMark().frame(width: 64)
             Text("Pergunte sobre suas finanças, tarefas, hábitos, metas, compras e saúde.")
-                .font(.title3.weight(.semibold))
+                .font(.title2.weight(.bold))
+                .foregroundStyle(Color.lifeInk)
             Text("O livo IA lê só o necessário dos seus registros, separa dados reais de estimativas e pede sua confirmação antes de gravar qualquer coisa.")
                 .font(.subheadline).foregroundStyle(.secondary)
             if !configured {
@@ -101,7 +103,8 @@ struct AssistantView: View {
             Text((try? AttributedString(markdown: item.text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace))) ?? AttributedString(item.text))
                 .textSelection(.enabled)
                 .padding(12)
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .background(Color.lifeSurface, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(Color.lifeHairline, lineWidth: 1))
                 .padding(.trailing, 32)
         case .tool:
             Label(item.text, systemImage: "checkmark.seal").font(.caption).foregroundStyle(.secondary)
@@ -116,7 +119,8 @@ struct AssistantView: View {
                 .lineLimit(1...5)
                 .focused($focused)
                 .padding(10)
-                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .background(Color.lifeSurface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(Color.lifeHairline, lineWidth: 1))
             Button {
                 let text = input
                 input = ""
@@ -174,6 +178,7 @@ struct AssistantSettingsView: View {
                 }
             }
             .navigationTitle("Servidor do livo IA")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
@@ -205,5 +210,6 @@ struct AIActionLogView: View {
             }
         }
         .navigationTitle("Histórico de ações")
+        .brandScreen()
     }
 }

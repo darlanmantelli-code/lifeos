@@ -19,6 +19,7 @@ struct CategoriesView: View {
             section(.receita, title: "Receitas")
         }
         .navigationTitle("Categorias")
+        .brandScreen()
         .alert(addParent.map { "Subcategoria de \($0.name)" } ?? "Nova categoria", isPresented: $showAdd) {
             TextField("Nome", text: $newName)
             Button("Adicionar", action: add)

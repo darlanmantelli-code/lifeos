@@ -56,6 +56,7 @@ struct AutomationsView: View {
             }
         }
         .navigationTitle("Automações")
+        .brandScreen()
     }
 
     private func add(_ trigger: AutomationTrigger, _ action: AutomationAction) {
@@ -114,6 +115,7 @@ struct AutomationRuleView: View {
             }
         }
         .navigationTitle("Regra")
+        .brandScreen()
         .onChange(of: rule.actionRaw) { _, raw in
             if raw == AutomationAction.notificacao.rawValue { Task { _ = await AutomationNotifier.requestPermission() } }
         }

@@ -25,7 +25,7 @@ struct HabitCheckRow: View {
             } label: {
                 Image(systemName: done ? "checkmark.circle.fill" : "circle")
                     .font(.title)
-                    .foregroundStyle(done ? Color.lifeAccent : Color.secondary)
+                    .foregroundStyle(done ? Color.lifeProgress : Color.secondary)
                     .contentTransition(.symbolEffect(.replace))
             }
             .buttonStyle(.plain)
@@ -92,6 +92,7 @@ struct HabitDetailView: View {
             }
         }
         .navigationTitle(habit.name)
+        .brandScreen()
         .toolbar { Button("Editar") { showEdit = true } }
         .sheet(isPresented: $showEdit) { HabitForm(editing: habit) }
         .confirmationDialog("Apagar \(habit.name)?", isPresented: $confirmDelete) {
@@ -187,6 +188,7 @@ struct HabitForm: View {
                 }
             }
             .navigationTitle(editing == nil ? "Novo hábito" : "Editar hábito")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

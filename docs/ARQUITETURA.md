@@ -1,6 +1,6 @@
 # livo — Arquitetura e plano
 
-*sua vida mais inteligente*
+*Vida inteligente. Sua vida mais simples.*
 
 ## Arquitetura
 

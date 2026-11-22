@@ -12,9 +12,12 @@ struct WidgetCard<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label(kind.title, systemImage: kind.icon)
-                .font(.headline)
-                .foregroundStyle(Color.lifeAccent)
+            Label {
+                Text(kind.title).foregroundStyle(Color.lifeInk)
+            } icon: {
+                Image(systemName: kind.icon).foregroundStyle(Color.lifeAccent)
+            }
+            .font(.headline)
             content
         }
         .card()
@@ -35,26 +38,39 @@ struct FinanceWidget: View {
         let range = period.interval()
         let summary = FinanceLogic.summary(transactions.filter { $0.date >= range.start && $0.date < range.end })
         let balance = accounts.reduce(Int64(0)) { $0 + FinanceLogic.balance(of: $1) }
-        WidgetCard(.financas) {
+        VStack(alignment: .leading, spacing: Spacing.m) {
             if accounts.isEmpty {
-                EmptyLine(text: "Cadastre uma conta na aba Finanças.")
+                Label("Resumo financeiro", systemImage: WidgetKind.financas.icon).font(.headline)
+                Text("Cadastre uma conta na aba Finanças para ver seu saldo aqui.")
+                    .font(.subheadline).foregroundStyle(.white.opacity(0.8))
             } else {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Saldo consolidado").font(.caption).foregroundStyle(.secondary)
-                    Text(Money.format(balance)).font(.title.bold()).monospacedDigit()
-                        .foregroundStyle(balance < 0 ? Color.lifeExpense : Color.primary)
+                    Text("Saldo consolidado").font(.subheadline.weight(.medium)).foregroundStyle(.white.opacity(0.75))
+                    Text(Money.format(balance))
+                        .font(.system(size: 40, weight: .heavy, design: .rounded))
+                        .monospacedDigit()
+                        .minimumScaleFactor(0.6).lineLimit(1)
+                        .foregroundStyle(balance < 0 ? Color(hex: 0xFFB4B8) : Color.white)
                 }
                 .accessibilityElement(children: .combine)
-                HStack {
-                    LabeledContent("Receitas", value: Money.format(summary.income))
-                    Divider()
-                    LabeledContent("Despesas", value: Money.format(summary.expense))
+                HStack(alignment: .top, spacing: Spacing.l) {
+                    heroStat("Receitas", summary.income, tint: Color(hex: 0x7DF0C2))
+                    heroStat("Despesas", summary.expense, tint: Color(hex: 0xFFB4B8))
                 }
-                .font(.subheadline).monospacedDigit()
-                Text("Período: \(period.rawValue.lowercased()) atual · inclui lançamentos previstos")
-                    .font(.caption2).foregroundStyle(.secondary)
+                Text("\(period.rawValue) atual · inclui lançamentos previstos")
+                    .font(.caption2).foregroundStyle(.white.opacity(0.65))
             }
         }
+        .heroCard()
+    }
+
+    private func heroStat(_ label: String, _ cents: Int64, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label).font(.caption.weight(.semibold)).foregroundStyle(.white.opacity(0.75))
+            Text(Money.format(cents)).font(.headline).monospacedDigit().foregroundStyle(tint)
+                .minimumScaleFactor(0.7).lineLimit(1)
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -182,7 +198,7 @@ struct HealthWidget: View {
             Label(k.label, systemImage: k.icon).font(.caption).foregroundStyle(.secondary)
             Text(value.map { "\(HealthLogic.format($0, k)) \(k.unit)" } ?? "—").font(.subheadline.bold()).monospacedDigit()
             if let target {
-                ProgressView(value: min((value ?? 0) / target, 1)).tint(Color.lifeAccent)
+                ProgressView(value: min((value ?? 0) / target, 1)).tint(Color.lifeProgress)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

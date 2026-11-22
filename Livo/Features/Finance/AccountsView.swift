@@ -36,6 +36,7 @@ struct AccountsView: View {
             }
         }
         .navigationTitle("Contas e cartões")
+        .brandScreen()
         .toolbar {
             Button { target = .new } label: { Image(systemName: "plus") }
                 .accessibilityLabel("Nova conta")
@@ -140,6 +141,7 @@ struct AccountForm: View {
                 }
             }
             .navigationTitle(editing == nil ? "Nova conta" : "Editar conta")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

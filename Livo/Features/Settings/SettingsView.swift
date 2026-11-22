@@ -105,10 +105,16 @@ struct SettingsView: View {
             Section {
                 LabeledContent("Versão", value: version)
             } footer: {
-                Text("livo · sua vida mais inteligente\nSeus dados ficam neste iPhone. Nada é enviado sem uma ação sua (assistente) e nenhuma conta bancária é acessada.")
+                VStack(alignment: .leading, spacing: 8) {
+                    BrandLockup(height: 20)
+                    Text(Brand.headline + " " + Brand.tagline)
+                    Text("Seus dados ficam neste iPhone. Nada é enviado sem uma ação sua (assistente) e nenhuma conta bancária é acessada.")
+                }
+                .padding(.top, Spacing.s)
             }
         }
         .navigationTitle("Configurações")
+        .brandScreen()
         .onChange(of: healthAuto) { _, on in
             if on { Task { do { try await HealthSync.requestAccess() } catch { healthAuto = false; show("Não foi possível acessar o app Saúde.") } } }
         }

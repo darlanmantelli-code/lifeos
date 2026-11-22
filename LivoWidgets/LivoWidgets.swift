@@ -29,26 +29,42 @@ struct SummaryWidgetView: View {
             if let s = entry.snapshot {
                 if family == .systemSmall { small(s) } else { medium(s) }
             } else {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("livo").font(.headline).foregroundStyle(Color.lifeAccent)
-                    Text("Abra o app para ver seu resumo aqui.").font(.caption).foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 8) {
+                    header
+                    Text("Abra o app para ver seu resumo aqui.").font(.caption).foregroundStyle(.white.opacity(0.8))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
-        .containerBackground(.fill.tertiary, for: .widget)
+        .foregroundStyle(.white)
+        .fontDesign(.rounded)
+        .containerBackground(for: .widget) {
+            ZStack(alignment: .bottomTrailing) {
+                LinearGradient(colors: [Color.heroTop, Color.heroBottom], startPoint: .topLeading, endPoint: .bottomTrailing)
+                LivoMark(style: .mono(Color.white.opacity(0.08)))
+                    .frame(width: 120)
+                    .offset(x: 34, y: 28)
+            }
+        }
+    }
+
+    private var header: some View {
+        HStack(spacing: 6) {
+            LivoMark().frame(height: 14)
+            Text("livo").font(.system(size: 15, weight: .heavy, design: .rounded))
+        }
     }
 
     private func small(_ s: WidgetSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("livo").font(.caption.weight(.semibold)).foregroundStyle(Color.lifeAccent)
+            header
             if let b = s.balanceCents {
-                Text(Money.format(b)).font(.headline).monospacedDigit().minimumScaleFactor(0.6).lineLimit(1)
-                    .privacySensitive()
+                Text(Money.format(b)).font(.system(size: 20, weight: .heavy, design: .rounded)).monospacedDigit()
+                    .minimumScaleFactor(0.6).lineLimit(1).privacySensitive()
             }
             Spacer(minLength: 0)
             Label("\(s.tasksToday) tarefa(s) hoje", systemImage: "checklist").font(.caption)
-            Label("\(s.habitsPending) hábito(s) pendente(s)", systemImage: "repeat").font(.caption)
+            Label("\(s.habitsPending) hábito(s) a fazer", systemImage: "repeat").font(.caption)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
@@ -56,13 +72,14 @@ struct SummaryWidgetView: View {
     private func medium(_ s: WidgetSnapshot) -> some View {
         HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("livo").font(.caption.weight(.semibold)).foregroundStyle(Color.lifeAccent)
+                header
                 if let b = s.balanceCents {
-                    Text("Saldo").font(.caption2).foregroundStyle(.secondary)
-                    Text(Money.format(b)).font(.headline).monospacedDigit().minimumScaleFactor(0.6).lineLimit(1).privacySensitive()
+                    Text("Saldo").font(.caption2).foregroundStyle(.white.opacity(0.75))
+                    Text(Money.format(b)).font(.system(size: 22, weight: .heavy, design: .rounded)).monospacedDigit()
+                        .minimumScaleFactor(0.6).lineLimit(1).privacySensitive()
                 }
-                Text("Despesas do mês").font(.caption2).foregroundStyle(.secondary)
-                Text(Money.format(s.monthExpenseCents)).font(.subheadline).monospacedDigit().privacySensitive()
+                Text("Despesas do mês").font(.caption2).foregroundStyle(.white.opacity(0.75))
+                Text(Money.format(s.monthExpenseCents)).font(.subheadline.weight(.semibold)).monospacedDigit().privacySensitive()
             }
             VStack(alignment: .leading, spacing: 6) {
                 Label(s.nextTask ?? "Nenhuma tarefa para hoje", systemImage: "checklist").font(.caption).lineLimit(2)
@@ -72,7 +89,7 @@ struct SummaryWidgetView: View {
                 }
                 Spacer(minLength: 0)
                 Text("Atualizado \(s.updatedAt.formatted(.dateTime.hour().minute().locale(.ptBR)))")
-                    .font(.caption2).foregroundStyle(.secondary)
+                    .font(.caption2).foregroundStyle(.white.opacity(0.65))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

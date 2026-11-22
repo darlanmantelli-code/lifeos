@@ -126,6 +126,7 @@ struct TransactionForm: View {
                 }
             }
             .navigationTitle(editing == nil ? "Novo lançamento" : "Editar lançamento")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

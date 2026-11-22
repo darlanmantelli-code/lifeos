@@ -62,15 +62,25 @@ private struct LockScreen: View {
 
     var body: some View {
         ZStack {
-            Rectangle().fill(.ultraThickMaterial).ignoresSafeArea()
+            Color.lifeCanvas.ignoresSafeArea()
             VStack(spacing: Spacing.m) {
-                Image(systemName: "lock.fill").font(.system(size: 44)).foregroundStyle(Color.lifeAccent)
-                Text("livo").font(.largeTitle.bold())
-                Text("sua vida mais inteligente").foregroundStyle(.secondary)
-                Button("Desbloquear", action: unlock)
-                    .buttonStyle(.borderedProminent)
-                    .disabled(authenticating)
-                    .padding(.top, Spacing.m)
+                LivoMark().frame(width: 132)
+                Wordmark(size: 44)
+                VStack(spacing: 4) {
+                    Text(Brand.headline).font(.title3.weight(.semibold)).foregroundStyle(Color.lifeInk)
+                    Text(Brand.tagline).foregroundStyle(.secondary)
+                }
+                Button {
+                    unlock()
+                } label: {
+                    Label("Desbloquear", systemImage: "faceid")
+                        .font(.headline)
+                        .padding(.horizontal, Spacing.m)
+                        .padding(.vertical, 4)
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(authenticating)
+                .padding(.top, Spacing.m)
             }
         }
         .accessibilityElement(children: .contain)
@@ -80,8 +90,8 @@ private struct LockScreen: View {
 private struct PrivacyCover: View {
     var body: some View {
         ZStack {
-            Rectangle().fill(.ultraThickMaterial).ignoresSafeArea()
-            Text("livo").font(.largeTitle.bold()).foregroundStyle(Color.lifeAccent)
+            Color.lifeCanvas.ignoresSafeArea()
+            LivoMark().frame(width: 96)
         }
         .accessibilityHidden(true)
     }

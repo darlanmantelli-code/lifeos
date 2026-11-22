@@ -23,7 +23,7 @@ struct GoalDetailView: View {
                 VStack(alignment: .leading, spacing: Spacing.s) {
                     Text(progress.formatted(.percent.precision(.fractionLength(0)).locale(.ptBR)))
                         .font(.largeTitle.bold()).monospacedDigit()
-                    ProgressView(value: progress).tint(Color.lifeAccent)
+                    ProgressView(value: progress).tint(Color.lifeProgress)
                     if let target = goal.targetValue {
                         Text("\(format(goal.currentValue ?? 0)) de \(format(target)) \(goal.unit)")
                             .font(.subheadline).foregroundStyle(.secondary)
@@ -78,6 +78,7 @@ struct GoalDetailView: View {
             }
         }
         .navigationTitle(goal.title)
+        .brandScreen()
         .toolbar { Button("Editar") { showEdit = true } }
         .sheet(isPresented: $showEdit) { GoalForm(editing: goal) }
         .sheet(isPresented: $showNewTask) { TaskForm(editing: nil, presetGoal: goal) }
@@ -179,6 +180,7 @@ struct GoalForm: View {
                 }
             }
             .navigationTitle(editing == nil ? "Nova meta" : "Editar meta")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

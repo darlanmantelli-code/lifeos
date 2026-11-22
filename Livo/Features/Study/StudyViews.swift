@@ -44,6 +44,7 @@ struct StudiesView: View {
             }
         }
         .navigationTitle("Estudos")
+        .brandScreen()
         .toolbar {
             Button { showNew = true } label: { Image(systemName: "plus") }.accessibilityLabel("Novo estudo")
         }
@@ -60,7 +61,7 @@ struct StudyRow: View {
                 Spacer()
                 Text("\(item.progress)%").font(.caption).monospacedDigit().foregroundStyle(.secondary)
             }
-            ProgressView(value: Double(item.progress), total: 100).tint(Color.lifeAccent)
+            ProgressView(value: Double(item.progress), total: 100).tint(Color.lifeProgress)
             Text("\(StudyLogic.totalMinutes(item)) min de foco" + (item.nextReview.map { " · revisão em \($0.formatted(.dateTime.day().month().locale(.ptBR)))" } ?? ""))
                 .font(.caption).foregroundStyle(.secondary)
         }
@@ -78,7 +79,7 @@ struct StudyDetailView: View {
         Form {
             Section {
                 Stepper("Progresso: \(item.progress)%", value: $item.progress, in: 0...100, step: 5)
-                ProgressView(value: Double(item.progress), total: 100).tint(Color.lifeAccent)
+                ProgressView(value: Double(item.progress), total: 100).tint(Color.lifeProgress)
                 LabeledContent("Tempo de foco", value: "\(StudyLogic.totalMinutes(item)) min")
                 NavigationLink { PomodoroView(study: item) } label: { Label("Focar neste estudo", systemImage: "timer") }
             }
@@ -104,6 +105,7 @@ struct StudyDetailView: View {
             }
         }
         .navigationTitle(item.title)
+        .brandScreen()
         .confirmationDialog("Apagar \(item.title)?", isPresented: $confirmDelete) {
             Button("Apagar", role: .destructive) {
                 dismiss()
@@ -133,6 +135,7 @@ struct StudyForm: View {
                 Toggle("Programar revisões espaçadas", isOn: $reviews)
             }
             .navigationTitle("Novo estudo")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
@@ -186,6 +189,7 @@ struct PomodoroView: View {
             .onChange(of: timer.isFinished(at: now)) { _, finished in if finished { finish() } }
         }
         .navigationTitle("Foco")
+        .brandScreen()
         .onDisappear { if timer.phase == .pause { stop() } }
     }
 

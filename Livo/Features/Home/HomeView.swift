@@ -33,8 +33,10 @@ struct HomeView: View {
                 }
             }
             .navigationTitle(greeting)
+            .brandScreen()
             .searchable(text: $query, prompt: "Buscar lançamentos, tarefas, compras…")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) { BrandLockup(height: 24) }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Section("Módulos") {
@@ -87,15 +89,17 @@ struct HomeView: View {
                 }
                 ForEach(widgets) { widget($0) }
 
-                Text("livo · sua vida mais inteligente")
-                    .font(.footnote).foregroundStyle(.tertiary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, Spacing.s)
+                VStack(spacing: 6) {
+                    BrandLockup(height: 22)
+                    Text(Brand.tagline).font(.footnote).foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.top, Spacing.l)
             }
             .padding()
             .animation(.snappy, value: widgets)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.lifeCanvas)
     }
 
     @ViewBuilder
@@ -133,7 +137,7 @@ struct DashboardEditor: View {
                                 Label(k.title, systemImage: k.icon)
                                 Spacer()
                                 Image(systemName: hidden.contains(k) ? "circle" : "checkmark.circle.fill")
-                                    .foregroundStyle(hidden.contains(k) ? Color.secondary : Color.lifeAccent)
+                                    .foregroundStyle(hidden.contains(k) ? Color.secondary : Color.lifeProgress)
                             }
                         }
                         .tint(.primary)
@@ -152,6 +156,7 @@ struct DashboardEditor: View {
             }
             .environment(\.editMode, .constant(.active))
             .navigationTitle("Editar painel")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

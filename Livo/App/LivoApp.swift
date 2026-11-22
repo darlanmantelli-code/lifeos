@@ -7,18 +7,28 @@ struct LivoApp: App {
     @State private var containers = ContainerStore()
     @Environment(\.scenePhase) private var phase
 
+    init() {
+        BrandAppearance.apply()
+    }
+
     var body: some Scene {
         WindowGroup {
             LockGate {
                 // A VStack (not safeAreaInset) so the banner takes its own row instead of covering navigation bars.
                 VStack(spacing: 0) {
-                    if demo { DemoBanner().padding(.vertical, 4) }
+                    if demo {
+                        DemoBanner()
+                            .padding(.vertical, 4)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.lifeCanvas)
+                    }
                     RootView()
                 }
             }
             .id(demo) // rebuild the whole tree when switching between real and demo data
             .modelContainer(containers.container(demo: demo))
             .tint(.lifeAccent)
+            .fontDesign(.rounded) // SF Rounded everywhere: it echoes the logo's rounded letterforms
             .environment(\.locale, .ptBR)
         }
         .onChange(of: phase) { _, new in

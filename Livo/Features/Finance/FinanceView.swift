@@ -73,6 +73,7 @@ struct FinanceView: View {
                 if accounts.isEmpty { emptyState } else { content }
             }
             .navigationTitle("Finanças")
+            .brandScreen()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Menu {
@@ -178,7 +179,7 @@ struct FinanceView: View {
                                     .font(.caption).monospacedDigit().foregroundStyle(.secondary)
                             }
                             ProgressView(value: Double(min(b.spent, b.limit)), total: Double(b.limit))
-                                .tint(b.spent > b.limit ? Color.lifeExpense : Color.lifeAccent)
+                                .tint(b.spent > b.limit ? Color.lifeExpense : Color.lifeProgress)
                         }
                         .accessibilityElement(children: .combine)
                     }

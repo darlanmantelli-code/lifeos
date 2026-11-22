@@ -46,7 +46,7 @@ struct ImportView: View {
                                 Button { c.include.toggle() } label: {
                                     Image(systemName: c.include ? "checkmark.circle.fill" : "circle")
                                         .font(.title3)
-                                        .foregroundStyle(c.include ? Color.lifeAccent : Color.secondary)
+                                        .foregroundStyle(c.include ? Color.lifeProgress : Color.secondary)
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel(c.include ? "Não importar" : "Importar")
@@ -73,6 +73,7 @@ struct ImportView: View {
                 }
             }
             .navigationTitle("Importar extrato")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

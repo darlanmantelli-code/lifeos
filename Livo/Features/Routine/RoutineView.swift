@@ -49,8 +49,9 @@ struct RoutineView: View {
                     }
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color.lifeCanvas)
             .navigationTitle("Rotina")
+            .brandScreen()
             .alert("livo", isPresented: $showNotice) {
                 Button("OK", role: .cancel) {}
             } message: {
@@ -190,7 +191,7 @@ struct GoalRow: View {
                 Text(progress.formatted(.percent.precision(.fractionLength(0)).locale(.ptBR)))
                     .font(.caption).monospacedDigit().foregroundStyle(.secondary)
             }
-            ProgressView(value: progress).tint(Color.lifeAccent)
+            ProgressView(value: progress).tint(Color.lifeProgress)
             if let d = goal.deadline {
                 Text("Prazo: \(d.formatted(.dateTime.day().month(.wide).year().locale(.ptBR)))")
                     .font(.caption).foregroundStyle(.secondary)

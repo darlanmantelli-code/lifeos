@@ -67,5 +67,6 @@ struct InsightsView: View {
             }
         }
         .navigationTitle("Análise")
+        .brandScreen()
     }
 }

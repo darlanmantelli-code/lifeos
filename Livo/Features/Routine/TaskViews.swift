@@ -20,7 +20,7 @@ struct TaskRow: View {
             } label: {
                 Image(systemName: task.done ? "checkmark.circle.fill" : "circle")
                     .font(.title2)
-                    .foregroundStyle(task.done ? Color.lifeAccent : Color.secondary)
+                    .foregroundStyle(task.done ? Color.lifeProgress : Color.secondary)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(task.done ? "Marcar \(task.title) como pendente" : "Concluir \(task.title)")
@@ -83,6 +83,7 @@ struct TaskForm: View {
                 }
             }
             .navigationTitle(editing == nil ? "Nova tarefa" : "Editar tarefa")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

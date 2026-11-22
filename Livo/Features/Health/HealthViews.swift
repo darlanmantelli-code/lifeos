@@ -43,8 +43,9 @@ struct HealthView: View {
                 .padding(.horizontal)
                 .padding(.bottom)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.lifeCanvas)
         .navigationTitle("Saúde")
+        .brandScreen()
         .toolbar {
             Button { showAdd = true } label: { Image(systemName: "plus") }
                 .accessibilityLabel("Novo registro")
@@ -164,6 +165,7 @@ struct HealthMetricView: View {
             Section { Text(healthDisclaimer).font(.footnote).foregroundStyle(.secondary) }
         }
         .navigationTitle(kind.label)
+        .brandScreen()
         .toolbar {
             Button { showAdd = true } label: { Image(systemName: "plus") }
                 .accessibilityLabel("Novo registro de \(kind.label)")
@@ -260,6 +262,7 @@ struct HealthEntryForm: View {
                 }
             }
             .navigationTitle("Novo registro")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }

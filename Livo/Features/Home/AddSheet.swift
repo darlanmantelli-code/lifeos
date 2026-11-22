@@ -50,6 +50,7 @@ struct AddSheet: View {
                 Section("Outros") { ForEach([Choice.compra, .saude]) { row($0) } }
             }
             .navigationTitle("Adicionar")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
@@ -90,6 +91,7 @@ struct HabitCheckInSheet: View {
                 ForEach(habits) { HabitCheckRow(habit: $0) }
             }
             .navigationTitle("Registrar hábito")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) { Button("Concluído") { dismiss() } }
@@ -126,6 +128,7 @@ struct QuickShoppingItemForm: View {
                 }
             }
             .navigationTitle("Item de compra")
+            .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
