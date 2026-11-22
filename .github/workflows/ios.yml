@@ -45,6 +45,7 @@ jobs:
             -destination "generic/platform=iOS" -archivePath build/Livo.xcarchive \
             CODE_SIGNING_ALLOWED=NO | tail -n 40
           test -f build/Livo.xcarchive/Products/Applications/Livo.app/PrivacyInfo.xcprivacy
+          test -d build/Livo.xcarchive/Products/Applications/Livo.app/PlugIns/LivoWidgets.appex
           plutil -p build/Livo.xcarchive/Products/Applications/Livo.app/Info.plist | grep -E "CFBundleDisplayName|NSFaceID|ITSApp|CFBundleIcon|BGTask|fetch"
       - name: Screenshots (modo demonstração)
         run: |

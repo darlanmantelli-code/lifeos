@@ -45,7 +45,9 @@ enum CalendarService {
     }
 
     static func sendToReminders(_ task: TaskItem) async throws {
-        guard remindersAuthorized || (await requestReminders()) else {
+        var allowed = remindersAuthorized
+        if !allowed { allowed = await requestReminders() }
+        guard allowed else {
             throw AssistantTools.ToolError(message: "Sem acesso aos Lembretes. Libere em Ajustes › livo.")
         }
         let reminder = EKReminder(eventStore: store)

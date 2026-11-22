@@ -25,5 +25,6 @@ enum AutomationScheduler {
             _ = try? await HealthSync.sync(days: 7, into: SharedStore.real.mainContext)
         }
         await AutomationEngine.run(in: SharedStore.real.mainContext)
+        WidgetSnapshotWriter.refresh()
     }
 }

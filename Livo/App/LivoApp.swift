@@ -24,7 +24,9 @@ struct LivoApp: App {
         .onChange(of: phase) { _, new in
             switch new {
             case .active: Task { await AutomationScheduler.runInForeground() }
-            case .background: AutomationScheduler.scheduleNext()
+            case .background:
+                AutomationScheduler.scheduleNext()
+                WidgetSnapshotWriter.refresh()
             default: break
             }
         }
