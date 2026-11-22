@@ -34,6 +34,11 @@ struct Backup: Codable {
         var source: String; var createdAt: Date }
     struct TargetDTO: Codable { var kind: String; var value: Double }
     struct LogDTO: Codable { var date: Date; var tool: String; var summary: String; var status: String }
+    struct RuleDTO: Codable { var trigger: String; var action: String; var parameter: Int; var enabled: Bool; var createdAt: Date; var firedKeys: String }
+    struct RunDTO: Codable { var date: Date; var ruleLabel: String; var message: String; var ok: Bool }
+    struct StudyDTO: Codable { var id: Int; var title: String; var kind: String; var progress: Int; var notes: String
+        var reviewStage: Int?; var nextReview: Date?; var archived: Bool; var createdAt: Date }
+    struct FocusDTO: Codable { var start: Date; var minutes: Int; var studyId: Int? }
 
     var contas: [AccountDTO] = []
     var categorias: [CategoryDTO] = []
@@ -50,6 +55,11 @@ struct Backup: Codable {
     var saude: [HealthDTO] = []
     var metasSaude: [TargetDTO] = []
     var historicoIA: [LogDTO] = []
+    // Added after version 1 shipped: optional so older files still decode.
+    var automacoes: [RuleDTO]? = []
+    var execucoesAutomacoes: [RunDTO]? = []
+    var estudos: [StudyDTO]? = []
+    var sessoesFoco: [FocusDTO]? = []
 
     static func encoder() -> JSONEncoder {
         let e = JSONEncoder()
@@ -147,6 +157,15 @@ enum BackupStore {
         for l in try all(ctx, AIActionLog.self) {
             b.historicoIA.append(.init(date: l.date, tool: l.tool, summary: l.summary, status: l.status))
         }
+        b.automacoes = try all(ctx, AutomationRule.self).map {
+            .init(trigger: $0.triggerRaw, action: $0.actionRaw, parameter: $0.parameter, enabled: $0.enabled, createdAt: $0.createdAt, firedKeys: $0.firedKeys)
+        }
+        b.execucoesAutomacoes = try all(ctx, AutomationRun.self).map { .init(date: $0.date, ruleLabel: $0.ruleLabel, message: $0.message, ok: $0.ok) }
+        b.estudos = try all(ctx, StudyItem.self).map {
+            .init(id: m.id($0)!, title: $0.title, kind: $0.kindRaw, progress: $0.progress, notes: $0.notes,
+                  reviewStage: $0.reviewStage, nextReview: $0.nextReview, archived: $0.archived, createdAt: $0.createdAt)
+        }
+        b.sessoesFoco = try all(ctx, FocusSession.self).map { .init(start: $0.start, minutes: $0.minutes, studyId: m.id($0.study)) }
         return try Backup.encoder().encode(b)
     }
 
@@ -175,6 +194,10 @@ enum BackupStore {
         try ctx.delete(model: HealthEntry.self)
         try ctx.delete(model: HealthTarget.self)
         try ctx.delete(model: AIActionLog.self)
+        try ctx.delete(model: AutomationRun.self)
+        try ctx.delete(model: AutomationRule.self)
+        try ctx.delete(model: FocusSession.self)
+        try ctx.delete(model: StudyItem.self)
         try ctx.save()
     }
 
@@ -282,6 +305,30 @@ enum BackupStore {
             let l = AIActionLog(tool: d.tool, summary: d.summary, status: d.status)
             ctx.insert(l)
             l.date = d.date
+        }
+        for d in b.automacoes ?? [] {
+            let r = AutomationRule(trigger: AutomationTrigger(rawValue: d.trigger) ?? .faturaProxima,
+                                   action: AutomationAction(rawValue: d.action) ?? .notificacao)
+            ctx.insert(r)
+            r.parameter = d.parameter; r.enabled = d.enabled; r.createdAt = d.createdAt; r.firedKeys = d.firedKeys
+        }
+        for d in b.execucoesAutomacoes ?? [] {
+            let r = AutomationRun(ruleLabel: d.ruleLabel, message: d.message, ok: d.ok)
+            ctx.insert(r)
+            r.date = d.date
+        }
+        var studies: [Int: StudyItem] = [:]
+        for d in b.estudos ?? [] {
+            let s = StudyItem(title: d.title, kind: StudyKind(rawValue: d.kind) ?? .curso)
+            ctx.insert(s)
+            s.progress = d.progress; s.notes = d.notes; s.reviewStage = d.reviewStage; s.nextReview = d.nextReview
+            s.archived = d.archived; s.createdAt = d.createdAt
+            studies[d.id] = s
+        }
+        for d in b.sessoesFoco ?? [] {
+            let f = FocusSession(start: d.start, minutes: d.minutes)
+            ctx.insert(f)
+            f.study = d.studyId.flatMap { studies[$0] }
         }
         try ctx.save()
     }
