@@ -1,0 +1,40 @@
+name: LifeOS
+options:
+  bundleIdPrefix: com.lifeos
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: pt-BR
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  LifeOS:
+    type: application
+    platform: iOS
+    sources: [LifeOS]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.lifeos.app
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: LIFE OS
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        TARGETED_DEVICE_FAMILY: "1"
+  LifeOSTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [LifeOSTests]
+    dependencies:
+      - target: LifeOS
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  LifeOS:
+    build:
+      targets:
+        LifeOS: all
+    test:
+      targets: [LifeOSTests]

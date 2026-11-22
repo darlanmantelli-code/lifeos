@@ -1,0 +1,24 @@
+name: iOS
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xcode
+        run: xcodebuild -version
+      - name: Generate project
+        run: brew install xcodegen && xcodegen generate
+      - name: Build & test
+        run: |
+          set -o pipefail
+          DEVICE=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [0-9]+[^(]*' | sed 's/ *$//')
+          echo "Simulator: $DEVICE"
+          xcodebuild test -project LifeOS.xcodeproj -scheme LifeOS \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
+            CODE_SIGNING_ALLOWED=NO | tail -n 200
