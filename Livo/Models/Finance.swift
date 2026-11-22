@@ -148,6 +148,6 @@ enum AppSchema {
         [Account.self, FinanceCategory.self, FinanceTransaction.self, Budget.self,
          TaskItem.self, Habit.self, HabitCheckIn.self, Goal.self, GoalStep.self,
          ShoppingList.self, ShoppingItem.self, PricePoint.self, HealthEntry.self, HealthTarget.self,
-         AIActionLog.self]
+         AIActionLog.self, AutomationRule.self, AutomationRun.self]
     }
 }

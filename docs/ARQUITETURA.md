@@ -60,5 +60,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 6. Privacidade: Face ID, exportar/restaurar/apagar, modo demonstração ✅
 7. TestFlight: ícone, manifesto de privacidade, workflow manual e guia (docs/TESTFLIGHT.md) ✅ — envio depende das credenciais Apple
 
-Pós-MVP: HealthKit, EventKit/Reminders, App Intents, widgets, CSV/OFX, automações
+Pós-MVP:
+- Motor de automações (regras, modelos, histórico, notificações locais, segundo plano) ✅
+- Pendente: HealthKit, EventKit/Reminders, App Intents, widgets, CSV/OFX
 (`BGAppRefreshTask` + notificações locais), estudos/Pomodoro, CloudKit, Open Finance (provedor autorizado), comparação de preços.

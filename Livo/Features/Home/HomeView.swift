@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-enum HomeRoute: String, Hashable { case compras, saude, configuracoes }
+enum HomeRoute: String, Hashable { case compras, saude, automacoes, configuracoes }
 
 struct HomeView: View {
     @AppStorage("dash.order") private var orderRaw = ""
@@ -40,6 +40,7 @@ struct HomeView: View {
                         Section("Módulos") {
                             Button("Compras", systemImage: "cart") { path.append(HomeRoute.compras) }
                             Button("Saúde", systemImage: "heart") { path.append(HomeRoute.saude) }
+                            Button("Automações", systemImage: "gearshape.2") { path.append(HomeRoute.automacoes) }
                         }
                         Button("Editar painel", systemImage: "slider.horizontal.3") { showEditor = true }
                         Button("Configurações", systemImage: "gearshape") { path.append(HomeRoute.configuracoes) }
@@ -53,6 +54,7 @@ struct HomeView: View {
                 switch r {
                 case .compras: ShoppingHomeView()
                 case .saude: HealthView()
+                case .automacoes: AutomationsView()
                 case .configuracoes: SettingsView()
                 }
             }

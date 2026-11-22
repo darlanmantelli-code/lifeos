@@ -5,6 +5,7 @@ import SwiftData
 struct LivoApp: App {
     @AppStorage(DemoMode.key) private var demo = false
     @State private var containers = ContainerStore()
+    @Environment(\.scenePhase) private var phase
 
     var body: some Scene {
         WindowGroup {
@@ -18,6 +19,16 @@ struct LivoApp: App {
             .modelContainer(containers.container(demo: demo))
             .tint(.lifeAccent)
             .environment(\.locale, .ptBR)
+        }
+        .onChange(of: phase) { _, new in
+            switch new {
+            case .active: Task { await AutomationScheduler.runInForeground() }
+            case .background: AutomationScheduler.scheduleNext()
+            default: break
+            }
+        }
+        .backgroundTask(.appRefresh(AutomationScheduler.taskID)) {
+            await AutomationScheduler.runInBackground()
         }
     }
 }
@@ -40,6 +51,7 @@ final class ContainerStore {
         if let real { return real }
         let c = make(inMemory: false)
         real = c
+        AutomationScheduler.container = c
         return c
     }
 
