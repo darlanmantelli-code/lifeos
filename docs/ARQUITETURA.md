@@ -65,4 +65,5 @@ Pós-MVP:
 - Importação de extratos OFX/CSV com categorização sugerida e detecção de duplicados ✅
 - Estudos (progresso, tempo, revisões espaçadas) e Pomodoro ✅
 - Siri e Atalhos (App Intents): registrar despesa, saldo, criar tarefa, registrar água ✅
-- Pendente: HealthKit, EventKit/Reminders, widgets, CloudKit, Open Finance (provedor autorizado), comparação de preços.
+- Apple Saúde (leitura), Calendário/Lembretes e widgets da tela inicial ✅
+- Pendente: CloudKit, Open Finance (provedor autorizado), comparação de preços.

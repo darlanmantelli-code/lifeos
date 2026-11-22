@@ -12,8 +12,14 @@ depois cada envio é um clique.
 
 1. Escolha um **bundle ID único** no seu domínio invertido, por exemplo `br.seunome.livo`
    (`com.livo.app`, o padrão do projeto, provavelmente já pertence a outra pessoa).
-2. Em <https://developer.apple.com/account/resources/identifiers> → **+** → App IDs → App,
-   registre esse bundle ID (capacidades: nenhuma extra por enquanto).
+2. Em <https://developer.apple.com/account/resources/identifiers>:
+   - **+** → App Groups → identificador `group.<seu bundle ID>` (ex.: `group.br.seunome.livo`).
+   - **+** → App IDs → App → bundle ID `br.seunome.livo`, marque **HealthKit** e **App Groups**
+     (associe o grupo acima).
+   - **+** → App IDs → App → bundle ID `br.seunome.livo.widgets` (o widget), marque **App Groups**
+     com o mesmo grupo.
+
+   A assinatura automática do workflow costuma criar o que faltar, mas registrar antes evita erros de perfil.
 3. Em <https://appstoreconnect.apple.com> → Apps → **+** → Novo app: plataforma iOS, nome **livo**
    (se estiver ocupado, use algo como "livo – sua vida"), idioma Português (Brasil), o bundle ID acima e um SKU qualquer (ex.: `livo-001`).
 
@@ -63,3 +69,15 @@ GitHub → Actions → **TestFlight** → Run workflow. Em ~15 minutos o build a
 | `Cloud signing permission error` | Chave da API sem acesso Admin |
 | `The bundle version must be higher` | Reexecute o workflow (o número do build sobe a cada execução) |
 | App não aparece no TestFlight | Aguarde o processamento; verifique o e-mail da Apple sobre o build |
+| `Provisioning profile doesn't include the com.apple.developer.healthkit entitlement` | Ative HealthKit no App ID do app (passo 2) |
+| `...application-groups...` no widget ou no app | App Group não criado/associado aos dois App IDs (passo 2) |
+
+## Permissões que o app pede (somente quando você usa o recurso)
+
+| Recurso | Quando aparece |
+|---|---|
+| Face ID | Ao ativar o bloqueio nas Configurações |
+| Notificações | Ao criar uma automação com notificação ou iniciar um Pomodoro |
+| App Saúde (leitura) | Ao tocar em "Importar do app Saúde" ou ativar a atualização automática |
+| Calendário | Ao tocar em "Conectar calendário" no painel |
+| Lembretes | Ao enviar a primeira tarefa para os Lembretes |
