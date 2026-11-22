@@ -5,12 +5,12 @@ Versão web do livo: PWA instalável, **local no navegador** (IndexedDB), na mes
 
 ## O que tem
 
-Início (resumo, alertas, tarefas, hábitos, metas, saúde, compras) · Finanças (lançamentos únicos, parcelados e recorrentes,
+Início (resumo, alertas, tarefas, hábitos, metas, saúde, compras) · Busca global · Estudos (revisões espaçadas e Pomodoro) · Finanças (lançamentos únicos, parcelados e recorrentes,
 contas e cartões, categorias, orçamentos, projeção de saldo, gastos incomuns, importação OFX/CSV) · Rotina (tarefas,
 hábitos com sequência, metas com etapas) · Compras (listas, desejos, histórico de preços informados por você) ·
 Saúde (registros manuais, gráficos, metas diárias) · Configurações (tema, backup, apagar tudo, modo demonstração).
 
-Ainda não há na web: assistente livo IA, automações, estudos/Pomodoro, Siri/Atalhos, Apple Saúde e widgets
+Ainda não há na web: assistente livo IA, automações, Siri/Atalhos, Apple Saúde e widgets
 (esses dados, quando vêm de um backup do iPhone, são preservados ao exportar de volta).
 
 ## Dados e privacidade

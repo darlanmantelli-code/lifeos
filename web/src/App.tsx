@@ -10,7 +10,9 @@ import { Finance } from './pages/Finance'
 import { Health, HealthEntryForm } from './pages/Health'
 import { Home } from './pages/Home'
 import { Routine, HabitForm, TaskForm } from './pages/Routine'
+import { Search } from './pages/Search'
 import { Settings } from './pages/Settings'
+import { Studies } from './pages/Studies'
 import { Shopping } from './pages/Shopping'
 import { TransactionForm } from './pages/finance/TransactionForm'
 
@@ -20,6 +22,8 @@ const NAV: ReadonlyArray<{ to: string; label: string; icon: IconName }> = [
   { to: '/rotina', label: 'Rotina', icon: 'tasks' },
   { to: '/compras', label: 'Compras', icon: 'cart' },
   { to: '/saude', label: 'Saúde', icon: 'heart' },
+  { to: '/estudos', label: 'Estudos', icon: 'book' },
+  { to: '/busca', label: 'Buscar', icon: 'search' },
   { to: '/config', label: 'Configurações', icon: 'settings' },
 ]
 
@@ -53,6 +57,8 @@ export function App() {
             <Route path="/rotina" element={<Routine />} />
             <Route path="/compras" element={<Shopping />} />
             <Route path="/saude" element={<Health />} />
+            <Route path="/estudos" element={<Studies />} />
+            <Route path="/busca" element={<Search />} />
             <Route path="/config" element={<Settings />} />
             <Route path="*" element={<Home />} />
           </Routes>
@@ -64,12 +70,12 @@ export function App() {
         <NavLink to="/financas" className="tab"><Icon name="wallet" /><span>Finanças</span></NavLink>
         <button className="tab add" onClick={() => setMenu(true)} aria-label="Adicionar"><span className="plus"><Icon name="plus" /></span><span>Adicionar</span></button>
         <NavLink to="/rotina" className="tab"><Icon name="tasks" /><span>Rotina</span></NavLink>
-        <button className="tab" aria-current={['/compras', '/saude', '/config'].includes(pathname) ? 'page' : undefined} onClick={() => setMore(true)}><Icon name="more" /><span>Mais</span></button>
+        <button className="tab" aria-current={['/compras', '/saude', '/estudos', '/busca', '/config'].includes(pathname) ? 'page' : undefined} onClick={() => setMore(true)}><Icon name="more" /><span>Mais</span></button>
       </nav>
 
       <Modal open={more} title="Mais" onClose={() => setMore(false)}>
         <ul className="list">
-          {NAV.filter((n) => ['/compras', '/saude', '/config'].includes(n.to)).map((n) => (
+          {NAV.filter((n) => ['/compras', '/saude', '/estudos', '/busca', '/config'].includes(n.to)).map((n) => (
             <li key={n.to}><button className="btn ghost grow" style={{ justifyContent: 'flex-start' }} onClick={() => { setMore(false); navigate(n.to) }}><Icon name={n.icon} />{n.label}</button></li>
           ))}
         </ul>
