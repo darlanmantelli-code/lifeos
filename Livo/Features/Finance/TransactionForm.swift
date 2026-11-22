@@ -37,6 +37,14 @@ struct TransactionForm: View {
         _kind = State(initialValue: editing.kind)
     }
 
+    /// New expense pre-filled from another module (e.g. a shopping list).
+    init(prefillTitle: String, amountCents: Int64?) {
+        editing = nil
+        _kind = State(initialValue: .despesa)
+        _title = State(initialValue: prefillTitle)
+        _amountText = State(initialValue: amountCents.map(Money.format) ?? "")
+    }
+
     private var amountCents: Int64? {
         guard let v = Money.parse(amountText), v > 0 else { return nil }
         return v

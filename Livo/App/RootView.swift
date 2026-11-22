@@ -12,7 +12,7 @@ struct RootView: View {
 
     var body: some View {
         TabView(selection: $tab) {
-            PlaceholderScreen(title: "Início", icon: "house", etapa: 4)
+            HomeView()
                 .tabItem { Label("Início", systemImage: "house") }.tag(AppTab.inicio)
             FinanceView()
                 .tabItem { Label("Finanças", systemImage: "creditcard") }.tag(AppTab.financas)
