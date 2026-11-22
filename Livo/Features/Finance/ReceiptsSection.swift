@@ -105,8 +105,11 @@ struct ReceiptsSection: View {
         let longest = max(image.size.width, image.size.height)
         let scale = min(1, 2_400 / longest)
         let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        // Scale 1: the renderer would otherwise use the screen scale (3x) and triple the pixel size.
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
         let resized = scale < 1
-            ? UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+            ? UIGraphicsImageRenderer(size: size, format: format).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
             : image
         return resized.jpegData(compressionQuality: 0.85) ?? data
     }

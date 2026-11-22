@@ -29,7 +29,9 @@ final class ReceiptTests: XCTestCase {
 
     func testPhotosAreDownscaledToJPEG() throws {
         let size = CGSize(width: 4_000, height: 3_000)
-        let big = UIGraphicsImageRenderer(size: size).image { ctx in
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let big = UIGraphicsImageRenderer(size: size, format: format).image { ctx in
             UIColor.systemTeal.setFill()
             ctx.fill(CGRect(origin: .zero, size: size))
         }
