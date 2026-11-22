@@ -26,6 +26,11 @@ struct TransactionForm: View {
     @State private var repetition: RepetitionChoice = .unica
     @State private var installments = 2
     @State private var loaded = false
+    @State private var receipts: [String] = []
+    /// Receipt files created in this session (deleted again if the form is cancelled).
+    @State private var addedReceipts: [String] = []
+    @State private var originalReceipts: [String] = []
+    @State private var saved = false
 
     init(initialKind: TxnKind = .despesa) {
         editing = nil
@@ -121,15 +126,24 @@ struct TransactionForm: View {
                     }
                 }
 
+                ReceiptsSection(names: $receipts, added: $addedReceipts)
+
                 Section("Observação") {
                     TextField("Opcional", text: $note, axis: .vertical)
                 }
             }
+            // Attachments are saved to disk before the transaction is: block swipe-to-dismiss so they can't be orphaned.
+            .interactiveDismissDisabled(!addedReceipts.isEmpty && !saved)
             .navigationTitle(editing == nil ? "Novo lançamento" : "Editar lançamento")
             .brandScreen()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancelar") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancelar") {
+                        ReceiptStore.delete(addedReceipts)
+                        dismiss()
+                    }
+                }
                 ToolbarItem(placement: .confirmationAction) { Button("Salvar", action: save).disabled(!isValid) }
             }
             .onAppear(perform: load)
@@ -158,6 +172,8 @@ struct TransactionForm: View {
             toAccount = e.toAccount
             category = e.category
             isFixed = e.isFixed
+            receipts = e.receipts
+            originalReceipts = e.receipts
         } else {
             account = accounts.first
         }
@@ -179,17 +195,24 @@ struct TransactionForm: View {
             e.toAccount = kind == .transferencia ? toAccount : nil
             e.category = kind == .transferencia ? nil : category
             e.isFixed = isFixed
+            e.receipts = receipts
+            ReceiptStore.delete(originalReceipts.filter { !receipts.contains($0) })
         } else {
             let rep: Repetition = switch repetition {
             case .unica: .unica
             case .parcelada: .parcelada(installments)
             case .recorrente: .recorrente
             }
-            FinanceStore.insert(TransactionDraft(kind: kind, amountCents: cents, title: finalTitle, note: note,
-                                                 date: date, account: account, toAccount: toAccount,
-                                                 category: category, isFixed: isFixed, repetition: rep),
-                                in: context)
+            let created = FinanceStore.insert(TransactionDraft(kind: kind, amountCents: cents, title: finalTitle, note: note,
+                                                               date: date, account: account, toAccount: toAccount,
+                                                               category: category, isFixed: isFixed, repetition: rep),
+                                              in: context)
+            // For installments/recurring entries the receipt belongs to the first occurrence.
+            created.first?.receipts = receipts
         }
+        // A file added and then removed again within this session isn't referenced by anything.
+        ReceiptStore.delete(addedReceipts.filter { !receipts.contains($0) })
+        saved = true
         dismiss()
     }
 }

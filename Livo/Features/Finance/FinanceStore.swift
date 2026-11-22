@@ -62,13 +62,17 @@ enum FinanceStore {
     /// `includingFuture` also deletes later occurrences of the same installment/recurring group.
     static func delete(_ t: FinanceTransaction, includingFuture: Bool, in ctx: ModelContext) throws {
         guard includingFuture, let gid = t.groupID else {
+            ReceiptStore.delete(t.receipts)
             ctx.delete(t)
             return
         }
         let target: UUID? = gid
         let from = t.date
         let group = try ctx.fetch(FetchDescriptor<FinanceTransaction>(predicate: #Predicate<FinanceTransaction> { $0.groupID == target }))
-        for x in group where x.date >= from { ctx.delete(x) }
+        for x in group where x.date >= from {
+            ReceiptStore.delete(x.receipts)
+            ctx.delete(x)
+        }
     }
 
     static func setBudget(_ cents: Int64, for category: FinanceCategory, from key: String, in ctx: ModelContext) {

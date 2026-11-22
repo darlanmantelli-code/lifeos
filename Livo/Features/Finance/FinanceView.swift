@@ -258,6 +258,7 @@ struct TransactionRow: View {
         }
         if let i = t.installmentIndex, let n = t.installmentCount { parts.append("\(i)/\(n)") }
         if t.isRecurring { parts.append("recorrente") }
+        if !t.receipts.isEmpty { parts.append(t.receipts.count == 1 ? "1 anexo" : "\(t.receipts.count) anexos") }
         if t.date > .now { parts.append("previsto") }
         return parts.joined(separator: " · ")
     }

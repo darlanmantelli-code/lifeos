@@ -178,6 +178,7 @@ enum BackupStore {
     }
 
     static func wipe(_ ctx: ModelContext) throws {
+        ReceiptStore.deleteAll()
         // Children first, then parents (cascades would do it, explicit is clearer).
         try ctx.delete(model: PricePoint.self)
         try ctx.delete(model: ShoppingItem.self)

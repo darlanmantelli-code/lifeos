@@ -113,6 +113,8 @@ final class FinanceTransaction {
     var isRecurring: Bool = false
     /// Bank id (OFX FITID or a hash for CSV) of an imported line; used to skip duplicates on re-import.
     var externalID: String?
+    /// Names of attached receipt files (see ReceiptStore), newline-separated.
+    var receiptsRaw: String = ""
     var createdAt: Date = Date()
     var account: Account?
     var toAccount: Account?
@@ -128,6 +130,11 @@ final class FinanceTransaction {
     var kind: TxnKind {
         get { TxnKind(rawValue: kindRaw) ?? .despesa }
         set { kindRaw = newValue.rawValue }
+    }
+
+    var receipts: [String] {
+        get { receiptsRaw.split(separator: "\n").map(String.init) }
+        set { receiptsRaw = newValue.joined(separator: "\n") }
     }
 }
 

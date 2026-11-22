@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 @testable import Livo
 
 final class BrandTests: XCTestCase {

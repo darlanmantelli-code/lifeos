@@ -67,5 +67,6 @@ Pós-MVP:
 - Siri e Atalhos (App Intents): registrar despesa, saldo, criar tarefa, registrar água ✅
 - Apple Saúde (leitura), Calendário/Lembretes e widgets da tela inicial ✅
 - Sincronização opcional pelo iCloud (CloudKit privado) com mesclagem de categorias duplicadas ✅
+- Comprovantes anexados aos lançamentos (foto, PDF ou imagem; só no aparelho) ✅
 - Nova identidade visual (logo vetorial, paleta, SF Rounded, cartão principal, ícones e abertura) — ver docs/IDENTIDADE.md ✅
 - Pendente: Open Finance (provedor autorizado), comparação de preços.
