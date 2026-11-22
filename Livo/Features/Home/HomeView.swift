@@ -103,6 +103,7 @@ struct HomeView: View {
         switch kind {
         case .financas: FinanceWidget(period: period)
         case .alertas: AlertsWidget()
+        case .agenda: AgendaWidget()
         case .tarefas: TasksWidget(period: period)
         case .habitos: HabitsWidget()
         case .pagamentos: PaymentsWidget(period: period)

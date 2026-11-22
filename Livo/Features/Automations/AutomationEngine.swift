@@ -61,6 +61,11 @@ enum AutomationEngine {
             }
             all = [AutomationFiring(key: "semana|\(calendar.startOfDay(for: now).timeIntervalSince1970)",
                                     title: "Resumo da semana", body: weeklySummary(ctx, now: now, calendar: calendar))]
+        case .compromisso:
+            all = CalendarService.upcoming(days: 1, now: now).filter { $0.start >= now }.map {
+                AutomationFiring(key: $0.id, title: "Preparar: \($0.title)",
+                                 body: "Compromisso \($0.start.formatted(.dateTime.weekday(.wide).hour().minute().locale(.ptBR))). Revise o que precisa levar ou preparar.")
+            }
         }
         return all.filter { !rule.hasFired($0.key) }
     }
@@ -108,6 +113,7 @@ enum AutomationEngine {
         (.orcamentoPercentual, .notificacao, "Quando um orçamento chegar a 80%, avisar"),
         (.resumoSemanal, .notificacao, "No domingo, enviar resumo da semana"),
         (.tarefaAtrasada, .notificacao, "Quando uma tarefa atrasar, avisar"),
+        (.compromisso, .tarefa, "Quando houver um compromisso, criar tarefa de preparação (checklist)"),
     ]
 }
 

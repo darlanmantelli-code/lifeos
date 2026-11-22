@@ -25,6 +25,8 @@ struct RoutineView: View {
 
     @State private var segment: Segment = Segment.allCases.first { String(describing: $0) == LaunchArgs.string("segment") } ?? .hoje
     @State private var sheet: FormSheet?
+    @State private var notice: String?
+    @State private var showNotice = false
 
     private var activeHabits: [Habit] { habits.filter { !$0.archived } }
 
@@ -49,6 +51,11 @@ struct RoutineView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Rotina")
+            .alert("livo", isPresented: $showNotice) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(notice ?? "")
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
@@ -150,6 +157,24 @@ struct RoutineView: View {
             .swipeActions {
                 Button("Apagar", systemImage: "trash", role: .destructive) { context.delete(t) }
             }
+            .swipeActions(edge: .leading) {
+                if !t.done {
+                    Button("Lembretes", systemImage: "list.bullet.rectangle") { sendToReminders(t) }
+                        .tint(.orange)
+                }
+            }
+    }
+
+    private func sendToReminders(_ t: TaskItem) {
+        Task {
+            do {
+                try await CalendarService.sendToReminders(t)
+                notice = "“\(t.title)” foi enviada para o app Lembretes."
+            } catch {
+                notice = error.localizedDescription
+            }
+            showNotice = true
+        }
     }
 }
 

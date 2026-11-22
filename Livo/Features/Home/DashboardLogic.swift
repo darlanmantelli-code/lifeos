@@ -23,13 +23,14 @@ enum DashPeriod: String, CaseIterable, Identifiable {
 }
 
 enum WidgetKind: String, CaseIterable, Identifiable {
-    case financas, alertas, tarefas, habitos, pagamentos, metas, saude, compras
+    case financas, alertas, agenda, tarefas, habitos, pagamentos, metas, saude, compras
     var id: String { rawValue }
 
     var title: String {
         switch self {
         case .financas: "Resumo financeiro"
         case .alertas: "Alertas"
+        case .agenda: "Próximos compromissos"
         case .tarefas: "Tarefas prioritárias"
         case .habitos: "Hábitos pendentes"
         case .pagamentos: "Pagamentos programados"
@@ -43,6 +44,7 @@ enum WidgetKind: String, CaseIterable, Identifiable {
         switch self {
         case .financas: "creditcard"
         case .alertas: "exclamationmark.triangle"
+        case .agenda: "calendar"
         case .tarefas: "checklist"
         case .habitos: "repeat"
         case .pagamentos: "calendar.badge.clock"

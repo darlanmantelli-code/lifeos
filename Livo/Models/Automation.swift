@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 enum AutomationTrigger: String, CaseIterable, Identifiable {
-    case faturaProxima, orcamentoPercentual, metaAlcancada, tarefaAtrasada, resumoSemanal
+    case faturaProxima, orcamentoPercentual, metaAlcancada, tarefaAtrasada, resumoSemanal, compromisso
     var id: String { rawValue }
 
     var label: String {
@@ -12,6 +12,7 @@ enum AutomationTrigger: String, CaseIterable, Identifiable {
         case .metaAlcancada: "Meta alcançada"
         case .tarefaAtrasada: "Tarefa ficou atrasada"
         case .resumoSemanal: "Resumo semanal no domingo"
+        case .compromisso: "Compromisso nas próximas 24 h"
         }
     }
 
@@ -22,6 +23,7 @@ enum AutomationTrigger: String, CaseIterable, Identifiable {
         case .metaAlcancada: "flag.checkered"
         case .tarefaAtrasada: "clock.badge.exclamationmark"
         case .resumoSemanal: "calendar"
+        case .compromisso: "calendar.badge.clock"
         }
     }
 
@@ -31,7 +33,7 @@ enum AutomationTrigger: String, CaseIterable, Identifiable {
         case .faturaProxima: ("Dias antes do vencimento", 1...10, 3)
         case .orcamentoPercentual: ("Percentual do orçamento", 50...100, 80)
         case .resumoSemanal: ("A partir das (hora)", 6...22, 18)
-        case .metaAlcancada, .tarefaAtrasada: nil
+        case .metaAlcancada, .tarefaAtrasada, .compromisso: nil
         }
     }
 }

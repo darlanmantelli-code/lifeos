@@ -84,3 +84,15 @@ final class DashboardTests: XCTestCase {
         XCTAssertEqual(upcoming.map(\.title), ["Show"])
     }
 }
+
+final class CalendarAutomationTests: XCTestCase {
+    @MainActor
+    func testEventRuleIsSilentWithoutCalendarAccess() throws {
+        let container = try ModelContainer(for: Schema(AppSchema.models), configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        // Test host has no calendar permission: no events, no firings, no crash.
+        XCTAssertFalse(CalendarService.eventsAuthorized)
+        XCTAssertTrue(CalendarService.upcoming().isEmpty)
+        XCTAssertTrue(AutomationEngine.firings(for: AutomationRule(trigger: .compromisso), in: container.mainContext).isEmpty)
+        XCTAssertTrue(DashboardLayout.order("").contains(.agenda))
+    }
+}
