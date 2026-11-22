@@ -147,6 +147,7 @@ enum AppSchema {
     static var models: [any PersistentModel.Type] {
         [Account.self, FinanceCategory.self, FinanceTransaction.self, Budget.self,
          TaskItem.self, Habit.self, HabitCheckIn.self, Goal.self, GoalStep.self,
-         ShoppingList.self, ShoppingItem.self, PricePoint.self, HealthEntry.self, HealthTarget.self]
+         ShoppingList.self, ShoppingItem.self, PricePoint.self, HealthEntry.self, HealthTarget.self,
+         AIActionLog.self]
     }
 }

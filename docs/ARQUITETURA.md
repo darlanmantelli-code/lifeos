@@ -56,7 +56,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 2. Rotina: tarefas, hábitos (sequência, calendário), metas com etapas ✅
 3. Compras (listas, desejos, histórico de preço) e Saúde manual + gráficos ✅
 4. Painel com widgets reorganizáveis (Dia/Semana/Mês), alertas, busca global, Adicionar ✅
-5. LIFE AI: backend FastAPI + ferramentas no aparelho + confirmação + log
+5. livo IA: backend FastAPI + ferramentas no aparelho + confirmação + histórico ✅
 6. Privacidade: Face ID, exportar/apagar, modo demonstração
 7. TestFlight (exige Apple Developer)
 

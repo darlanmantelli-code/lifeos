@@ -26,7 +26,7 @@ struct RootView: View {
                 .tabItem { Label("Adicionar", systemImage: "plus.circle.fill") }.tag(AppTab.adicionar)
             RoutineView()
                 .tabItem { Label("Rotina", systemImage: "checklist") }.tag(AppTab.rotina)
-            PlaceholderScreen(title: "LIFE AI", icon: "sparkles", etapa: 5)
+            AssistantView()
                 .tabItem { Label("IA", systemImage: "sparkles") }.tag(AppTab.ia)
         }
         // "Adicionar" is an action, not a screen: open the sheet and stay on the previous tab.
@@ -45,22 +45,5 @@ struct RootView: View {
     }
 }
 
-/// Honest placeholder: says which implementation stage delivers the screen. No fake data.
-struct PlaceholderScreen: View {
-    let title: String
-    let icon: String
-    let etapa: Int
-
-    var body: some View {
-        NavigationStack {
-            ContentUnavailableView(
-                "Em construção",
-                systemImage: icon,
-                description: Text("Esta tela chega na etapa \(etapa) do MVP.")
-            )
-            .navigationTitle(title)
-        }
-    }
-}
 
 #Preview { RootView().modelContainer(for: AppSchema.models, inMemory: true) }
