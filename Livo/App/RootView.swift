@@ -18,7 +18,7 @@ struct RootView: View {
                 .tabItem { Label("Finanças", systemImage: "creditcard") }.tag(AppTab.financas)
             Color.clear
                 .tabItem { Label("Adicionar", systemImage: "plus.circle.fill") }.tag(AppTab.adicionar)
-            PlaceholderScreen(title: "Rotina", icon: "checklist", etapa: 2)
+            RoutineView()
                 .tabItem { Label("Rotina", systemImage: "checklist") }.tag(AppTab.rotina)
             PlaceholderScreen(title: "LIFE AI", icon: "sparkles", etapa: 5)
                 .tabItem { Label("IA", systemImage: "sparkles") }.tag(AppTab.ia)

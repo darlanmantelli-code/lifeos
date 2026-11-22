@@ -1,5 +1,5 @@
 import XCTest
-@testable import LifeOS
+@testable import Livo
 
 final class MoneyTests: XCTestCase {
     func testFormatBRL() {

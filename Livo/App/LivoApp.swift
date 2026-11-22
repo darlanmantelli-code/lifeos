@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct LifeOSApp: App {
+struct LivoApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()

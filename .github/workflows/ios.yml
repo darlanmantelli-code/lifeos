@@ -19,6 +19,6 @@ jobs:
           set -o pipefail
           DEVICE=$(xcrun simctl list devices available | grep -m1 -oE 'iPhone [0-9]+[^(]*' | sed 's/ *$//')
           echo "Simulator: $DEVICE"
-          xcodebuild test -project LifeOS.xcodeproj -scheme LifeOS \
+          xcodebuild test -project Livo.xcodeproj -scheme Livo \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             CODE_SIGNING_ALLOWED=NO | tail -n 200

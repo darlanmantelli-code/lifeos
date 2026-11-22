@@ -1,6 +1,6 @@
 import XCTest
 import SwiftData
-@testable import LifeOS
+@testable import Livo
 
 final class FinanceTests: XCTestCase {
     private let cal = Calendar.ptBR

@@ -1,4 +1,6 @@
-# LIFE OS — Arquitetura e plano
+# livo — Arquitetura e plano
+
+*sua vida mais inteligente*
 
 ## Arquitetura
 
@@ -51,7 +53,7 @@ Saldos, sequências e progresso são calculados, não armazenados. Layout do das
 
 0. Base: projeto, CI macOS, design system ✅
 1. Finanças manual: contas, categorias, lançamentos (único/parcelado/recorrente), orçamento ✅
-2. Rotina: tarefas, hábitos, metas
+2. Rotina: tarefas, hábitos (sequência, calendário), metas com etapas ✅
 3. Compras e Saúde manual + gráficos
 4. Dashboard com widgets, busca global, Adicionar
 5. LIFE AI: backend FastAPI + ferramentas no aparelho + confirmação + log

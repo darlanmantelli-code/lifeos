@@ -145,6 +145,7 @@ final class Budget {
 
 enum AppSchema {
     static var models: [any PersistentModel.Type] {
-        [Account.self, FinanceCategory.self, FinanceTransaction.self, Budget.self]
+        [Account.self, FinanceCategory.self, FinanceTransaction.self, Budget.self,
+         TaskItem.self, Habit.self, HabitCheckIn.self, Goal.self, GoalStep.self]
     }
 }

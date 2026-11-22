@@ -1,6 +1,6 @@
-name: LifeOS
+name: Livo
 options:
-  bundleIdPrefix: com.lifeos
+  bundleIdPrefix: com.livo
   deploymentTarget:
     iOS: "17.0"
   developmentLanguage: pt-BR
@@ -10,31 +10,31 @@ settings:
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
 targets:
-  LifeOS:
+  Livo:
     type: application
     platform: iOS
-    sources: [LifeOS]
+    sources: [Livo]
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.lifeos.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.livo.app
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: LIFE OS
+        INFOPLIST_KEY_CFBundleDisplayName: livo
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
         TARGETED_DEVICE_FAMILY: "1"
-  LifeOSTests:
+  LivoTests:
     type: bundle.unit-test
     platform: iOS
-    sources: [LifeOSTests]
+    sources: [LivoTests]
     dependencies:
-      - target: LifeOS
+      - target: Livo
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
 schemes:
-  LifeOS:
+  Livo:
     build:
       targets:
-        LifeOS: all
+        Livo: all
     test:
-      targets: [LifeOSTests]
+      targets: [LivoTests]
