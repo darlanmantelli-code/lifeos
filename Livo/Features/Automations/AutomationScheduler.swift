@@ -3,11 +3,10 @@ import SwiftData
 import BackgroundTasks
 
 /// Background refresh: iOS runs it when it decides (battery, usage); we only ask for "not before 4 h from now".
+/// Always works on the real store; demo data never triggers automations.
 @MainActor
 enum AutomationScheduler {
     static let taskID = "com.livo.app.refresh"
-    /// The on-disk store. Demo data never triggers automations.
-    static var container: ModelContainer?
 
     static func scheduleNext() {
         let request = BGAppRefreshTaskRequest(identifier: taskID)
@@ -17,12 +16,11 @@ enum AutomationScheduler {
 
     static func runInBackground() async {
         scheduleNext()
-        guard !DemoMode.isOn, let container else { return }
-        await AutomationEngine.run(in: container.mainContext)
+        await runInForeground()
     }
 
     static func runInForeground() async {
-        guard !DemoMode.isOn, let container else { return }
-        await AutomationEngine.run(in: container.mainContext)
+        guard !DemoMode.isOn else { return }
+        await AutomationEngine.run(in: SharedStore.real.mainContext)
     }
 }

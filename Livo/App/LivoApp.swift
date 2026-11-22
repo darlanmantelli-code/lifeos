@@ -34,29 +34,30 @@ struct LivoApp: App {
     }
 }
 
+/// The one on-disk store, shared by the app UI, Siri/Shortcuts intents and background refresh.
+@MainActor
+enum SharedStore {
+    static let real: ModelContainer = ContainerStore.make(inMemory: false)
+}
+
 /// Real data lives on disk; demo data is a separate in-memory store, recreated each time demo mode is turned on.
 @MainActor
 final class ContainerStore {
-    private var real: ModelContainer?
     private var demoContainer: ModelContainer?
 
     func container(demo: Bool) -> ModelContainer {
         if demo {
             if let demoContainer { return demoContainer }
-            let c = make(inMemory: true)
+            let c = Self.make(inMemory: true)
             DemoData.seed(c.mainContext)
             demoContainer = c
             return c
         }
         demoContainer = nil
-        if let real { return real }
-        let c = make(inMemory: false)
-        real = c
-        AutomationScheduler.container = c
-        return c
+        return SharedStore.real
     }
 
-    private func make(inMemory: Bool) -> ModelContainer {
+    static func make(inMemory: Bool) -> ModelContainer {
         do {
             return try ModelContainer(for: Schema(AppSchema.models),
                                       configurations: ModelConfiguration(isStoredInMemoryOnly: inMemory))

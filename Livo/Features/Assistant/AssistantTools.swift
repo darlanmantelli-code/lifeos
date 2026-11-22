@@ -5,7 +5,10 @@ import SwiftData
 /// Names and inputs mirror `backend/assistant.py` TOOLS. Inputs come from the model: validate everything.
 @MainActor
 enum AssistantTools {
-    struct ToolError: Error { let message: String }
+    struct ToolError: LocalizedError {
+        let message: String
+        var errorDescription: String? { message }
+    }
 
     static let writeTools: Set<String> = ["registrar_despesa", "criar_tarefa", "adicionar_item_compra"]
     static func needsConfirmation(_ name: String) -> Bool { writeTools.contains(name) }
